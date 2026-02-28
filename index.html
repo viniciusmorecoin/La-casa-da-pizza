@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Casa da Pizza | O Plano Perfeito</title>
+    <title>La Casa da Pizza | Cardápio Oficial</title>
     <script src="https://sdk.mercadopago.com/js/v2"></script>
     <style>
         :root { --primary: #8B0000; --accent: #ff3c00; --success: #25D366; --gold: #FFD700; --bg: #f8f8f8; --text: #333; --blue-mp: #009ee3; }
@@ -18,30 +18,32 @@
         .banner { background: linear-gradient(90deg, var(--primary), var(--accent)); color: white; padding: 8px; text-align: center; font-weight: bold; font-size: 11px; }
 
         .categories { display: flex; gap: 10px; padding: 15px; background: white; overflow-x: auto; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #eee; }
+        .categories::-webkit-scrollbar { display: none; }
         .cat-btn { padding: 8px 18px; border-radius: 20px; border: 1px solid #ddd; background: white; cursor: pointer; white-space: nowrap; font-size: 14px; }
         .cat-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
 
         .grid { display: flex; flex-direction: column; gap: 1px; background: #eee; }
-        .card { background: white; padding: 15px; display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; }
+        .card { background: white; padding: 15px; display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; border-bottom: 1px solid #f2f2f2; }
         .card-content { flex: 1; }
         .card-content h3 { margin: 0 0 5px 0; font-size: 16px; color: #333; font-weight: 600; }
         .card-content small { display: block; color: #666; font-size: 13px; line-height: 1.4; margin-bottom: 8px; }
-        .card img { width: 90px; height: 90px; border-radius: 8px; object-fit: cover; flex-shrink: 0; background: #eee; }
+        .card img { width: 95px; height: 95px; border-radius: 12px; object-fit: cover; flex-shrink: 0; background: #eee; border: 1px solid #eee; }
         
         .price { color: #333; font-weight: bold; font-size: 15px; margin-top: 5px; display: block; }
-        .add-btn { background: white; color: var(--primary); border: 1px solid var(--primary); padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; font-size: 13px; transition: 0.2s; }
+        .add-btn { background: white; color: var(--primary); border: 1px solid var(--primary); padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; font-size: 13px; }
         .btn-combo { background: var(--gold) !important; color: black !important; border: none !important; }
 
         .meia-box { background: white; margin: 15px; padding: 15px; border-radius: 12px; border: 1px dashed var(--primary); }
-        .meia-box select, .modal-content select, .modal-content input { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; }
+        .meia-box select, .modal-content select, .modal-content input { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; font-size: 14px; }
 
         .cart-btn { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: var(--success); color: white; padding: 15px; border-radius: 12px; font-weight: bold; text-align: center; z-index: 999; box-shadow: 0 5px 15px rgba(0,0,0,0.2); cursor: pointer; }
 
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(4px); }
-        .modal-content { background: white; width: 92%; max-width: 400px; padding: 20px; border-radius: 15px; max-height: 85vh; overflow-y: auto; }
+        .modal-content { background: white; width: 92%; max-width: 450px; padding: 20px; border-radius: 15px; max-height: 85vh; overflow-y: auto; }
         
         #aviso-pagamento { display: none; background: #e7f3ff; color: #0c5460; padding: 12px; border-radius: 8px; margin-bottom: 10px; font-size: 12px; border: 1px solid #bee5eb; line-height: 1.4; }
         #btn-mp-style { display: none; background: var(--blue-mp); color: white; padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; font-weight: bold; margin-bottom: 15px; }
+        .combo-item-box { background: #f4f4f4; padding: 10px; border-radius: 10px; margin-bottom: 8px; border-left: 4px solid var(--gold); }
     </style>
 </head>
 <body>
@@ -53,7 +55,7 @@
     <h1 style="margin:0; font-size:18px;">La Casa da Pizza</h1>
 </header>
 
-<div class="banner">🚀 Areal, Águas Claras, Taguatinga e Região</div>
+<div class="banner">🚀 Delivery em Areal, Águas Claras e Região</div>
 
 <div class="categories">
     <button class="cat-btn active" onclick="filtrar(event,'todas')">Todas</button>
@@ -63,14 +65,14 @@
 </div>
 
 <div class="meia-box">
-    <h2 style="margin-top:0; font-size:16px;">🍕 Montar Meia a Meia</h2>
+    <h2 style="margin-top:0; font-size:16px;">🍕 Montar Meia a Meia (8 fatias)</h2>
     <select id="sabor1"></select>
     <select id="sabor2"></select>
     <select id="borda">
-        <option value="0">Sem borda</option>
-        <option value="8">Borda Catupiry (+ R$ 8)</option>
-        <option value="8">Borda Cheddar (+ R$ 8)</option>
-        <option value="10">Borda Chocolate (+ R$ 10)</option>
+        <option value="0">Sem borda recheada</option>
+        <option value="8">Borda Catupiry (+ R$ 8,00)</option>
+        <option value="8">Borda Cheddar (+ R$ 8,00)</option>
+        <option value="10">Borda Chocolate (+ R$ 10,00)</option>
     </select>
     <button class="add-btn" style="width:100%; background:var(--primary); color:white;" onclick="addMeia()">Adicionar Meia a Meia</button>
 </div>
@@ -81,74 +83,93 @@
 
 <div class="modal" id="modal-combo">
     <div class="modal-content">
-        <h2 id="combo-titulo" style="color:var(--primary); margin:0 0 10px 0; font-size:18px;">Personalizar Combo</h2>
+        <h2 id="combo-titulo" style="color:var(--primary); margin:0 0 10px 0; font-size:18px;">Configurar Combo</h2>
         <div id="combo-opcoes"></div>
-        <label style="font-size:13px; font-weight:bold;">🥤 Refrigerante (1.5L):</label>
+        <label style="font-size:13px; font-weight:bold;">🥤 Bebida do Combo:</label>
         <select id="combo-refri">
-            <option>Coca-Cola</option>
-            <option>Guaraná Antarctica</option>
+            <option>Coca-Cola 1.5L</option>
+            <option>Guaraná Antarctica 1.5L</option>
+            <option>Fanta Laranja 1.5L</option>
         </select>
-        <button class="add-btn" onclick="confirmarCombo()" style="background:var(--success); color:white; border:none; width:100%; padding:12px; margin-top:10px;">Confirmar Combo</button>
+        <button class="add-btn" onclick="confirmarCombo()" style="background:var(--success); color:white; border:none; width:100%; padding:12px; margin-top:10px;">Confirmar e Adicionar</button>
         <button onclick="fecharModalCombo()" style="background:none; border:none; color:#999; width:100%; margin-top:15px;">Cancelar</button>
     </div>
 </div>
 
 <div class="modal" id="modal">
     <div class="modal-content">
-        <h2 style="margin-top:0;">Meu Pedido</h2>
+        <h2 style="margin-top:0;">Meu Carrinho</h2>
         <div id="itens"></div>
         <div id="total-display" style="text-align:right; margin: 15px 0; font-size:14px;"></div>
-        
         <hr style="border:0; border-top:1px solid #eee;">
-        
-        <input id="nome" placeholder="Seu Nome">
-        <input id="endereco" placeholder="Endereço e Número">
+        <input id="nome" placeholder="Seu Nome Completo">
+        <input id="endereco" placeholder="Endereço, Número e Complemento">
         <select id="bairro" onchange="atualizarTotalModal()">
             <option value="" disabled selected>Selecione seu Bairro (Taxa)</option>
-            <option value="0">Retirada (Grátis)</option>
+            <option value="0">Retirada no Balcão (Grátis)</option>
             <option value="5">Areal - R$ 5,00</option>
+            <option value="7">Arniqueiras - R$ 7,00</option>
             <option value="10">Águas Claras - R$ 10,00</option>
             <option value="10">Taguatinga Sul - R$ 10,00</option>
-            <option value="12">Samambaia - R$ 12,00</option>
+            <option value="10">Riacho Fundo I - R$ 10,00</option>
+            <option value="12">Samambaia Sul - R$ 12,00</option>
+            <option value="15">Taguatinga Norte - R$ 15,00</option>
+            <option value="15">Samambaia Norte - R$ 15,00</option>
         </select>
-
-        <label style="font-size: 13px; font-weight: bold;">💳 Pagamento:</label>
+        <label style="font-size: 13px; font-weight: bold;">💳 Forma de Pagamento:</label>
         <select id="pagamento" onchange="verificarPagamento()">
-            <option value="Entrega (Maquininha)">Cartão na Entrega (Maquininha)</option>
-            <option value="Entrega (Dinheiro)">Dinheiro na Entrega</option>
+            <option value="Maquininha (Cartão)">Cartão (Maquininha na Entrega)</option>
+            <option value="Dinheiro">Dinheiro (Pagar na Entrega)</option>
             <option value="Pix Online">Pagar Agora (PIX / Cartão Online)</option>
         </select>
-
         <div id="aviso-pagamento"></div>
-        <div id="btn-mp-style" onclick="abrirCheckout()">Pagar com Mercado Pago</div>
-
-        <button class="add-btn" id="btn-finalizar" onclick="finalizar()" style="background:var(--success); color:white; border:none; width:100%; padding:15px;">Finalizar no WhatsApp</button>
-        <button onclick="fecharCarrinho()" style="background:none; border:none; color:#999; width:100%; margin-top:10px;">Continuar Comprando</button>
+        <div id="btn-mp-style" onclick="abrirCheckout()">💳 PAGAR AGORA COM MERCADO PAGO</div>
+        <button class="add-btn" id="btn-finalizar" onclick="finalizar()" style="background:var(--success); color:white; border:none; width:100%; padding:15px;">Finalizar Pedido no WhatsApp</button>
+        <button onclick="fecharCarrinho()" style="background:none; border:none; color:#999; width:100%; margin-top:10px;">Voltar ao Cardápio</button>
     </div>
 </div>
 
 <script>
 const LINK_MERCADO_PAGO = "https://link.mercadopago.com.br/pedidolacasadapizza";
+const WHATSAPP_NUM = "5561998791411";
 
 const sabores = [
+    // SALGADAS
     {nome:"Pizza do Professor",cat:"salgada",preco:49.90,img:"professor.jpg",desc:"Mussarela, carne moída temperada, bacon e barbecue."},
     {nome:"Pizza da Lisboa",cat:"salgada",preco:49.90,img:"lisboa.jpg",desc:"Mussarela, bacon crocante e abacaxi selecionado."},
     {nome:"Pizza do Berlim",cat:"salgada",preco:49.90,img:"berlim.jpg",desc:"Molho de tomate, mussarela e pepperoni fatiado."},
     {nome:"Pizza da Tóquio",cat:"salgada",preco:49.90,img:"toquio.jpg",desc:"Mussarela, atum, cebola, tomate e azeitona."},
     {nome:"Pizza do Rio",cat:"salgada",preco:49.90,img:"rio.jpg",desc:"Mussarela, calabresa fatiada, cebola e orégano."},
     {nome:"Pizza da Nairóbi",cat:"salgada",preco:49.90,img:"nairobi.jpg",desc:"Mussarela, frango desfiado e catupiry original."},
-    {nome:"Pizza de Confete",cat:"doce",preco:39.90,img:"confete.jpg",desc:"Chocolate ao leite com confetes coloridos."},
-    {nome:"Pizza de Banana Nevada",cat:"doce",preco:39.90,img:"banana.jpg",desc:"Banana, chocolate branco e leite em pó."},
-    {nome:"Combo O Professor", cat:"combo", preco:64.90, img:"combo-prof.jpg", desc:"1 Salgada (até 2 sabores) + Refri 1.5L"},
-    {nome:"Combo Dalí", cat:"combo", preco:75.00, img:"combo-dali.jpg", desc:"1 Salgada + 1 Doce Grande + Refri 1.5L"}
+    {nome:"Pizza do Palermo",cat:"salgada",preco:49.90,img:"palermo.jpg",desc:"Mussarela, tomate, manjericão e orégano."},
+    {nome:"Pizza do Marselha",cat:"salgada",preco:49.90,img:"marselha.jpg",desc:"Mussarela, cogumelos e presunto fatiado."},
+    {nome:"Pizza do Denver",cat:"salgada",preco:49.90,img:"denver.jpg",desc:"Mussarela, calabresa e pimenta calabresa."},
+    {nome:"Pizza do Oslo",cat:"salgada",preco:49.90,img:"oslo.jpg",desc:"Mussarela, carne seca desfiada e catupiry."},
+    {nome:"Pizza da Estocolmo",cat:"salgada",preco:49.90,img:"estocolmo.jpg",desc:"Mussarela, presunto, tomate e azeitona."},
+    {nome:"Pizza do Moscou",cat:"salgada",preco:49.90,img:"moscou.jpg",desc:"Queijo prato, cheddar, catupiry e mussarela."},
+    {nome:"Pizza do Bogotá",cat:"salgada",preco:49.90,img:"bogota.jpg",desc:"Mussarela, carne moída, milho e orégano."},
+    
+    // DOCES
+    {nome:"Pizza de Confete",cat:"doce",preco:39.90,img:"confete.jpg",desc:"Chocolate ao leite cremoso com confetes coloridos."},
+    {nome:"Pizza de Banana Nevada",cat:"doce",preco:39.90,img:"banana.jpg",desc:"Banana fatiada, chocolate branco e leite em pó."},
+    {nome:"Pizza Romeo e Julieta",cat:"doce",preco:39.90,img:"romeo.jpg",desc:"Mussarela derretida com goiabada cascão especial."},
+    {nome:"Pizza de Chocolate",cat:"doce",preco:39.90,img:"chocolate.jpg",desc:"Pura camada de chocolate ao leite artesanal."},
+    {nome:"Pizza de Prestígio",cat:"doce",preco:39.90,img:"prestigio.jpg",desc:"Chocolate ao leite coberto com coco ralado fino."},
+
+    // COMBOS
+    {nome:"Combo O Professor", cat:"combo", preco:64.90, img:"combo-prof.jpg", desc:"1 Pizza Salgada (8 fatias) + Refri 1.5L"},
+    {nome:"Combo Plano Bella Ciao", cat:"combo", preco:99.90, img:"combo-bella.jpg", desc:"2 Pizzas Salgadas + 1 Doce + Refri 1.5L"},
+    {nome:"Combo Dalí", cat:"combo", preco:75.00, img:"combo-dali.jpg", desc:"1 Pizza Salgada + 1 Pizza Doce + Refri 1.5L"}
 ];
 
 const configCombos = {
     "Combo O Professor": [{t:"salgada"}],
+    "Combo Plano Bella Ciao": [{t:"salgada"}, {t:"salgada"}, {t:"doce"}],
     "Combo Dalí": [{t:"salgada"}, {t:"doce"}]
 };
 
 let carrinho = [];
+let comboEmEdicao = null;
 
 function render(cat){
     const lista = document.getElementById("lista");
@@ -172,14 +193,14 @@ function verificarPagamento() {
 
     if(pag === "Pix Online") {
         aviso.style.display = "block";
-        aviso.innerHTML = "✨ <strong>Checkout Seguro:</strong> Clique no botão azul para pagar agora. Após pagar, envie o pedido no WhatsApp!";
+        aviso.innerHTML = "✨ <strong>Pagamento Digital:</strong> Clique no botão azul para pagar. Após o pagamento, clique no botão verde para enviar o pedido!";
         btnMP.style.display = "block";
         btnWhats.style.display = "none";
     } else {
         aviso.style.display = "none";
         btnMP.style.display = "none";
         btnWhats.style.display = "block";
-        btnWhats.innerText = "Finalizar no WhatsApp";
+        btnWhats.innerText = "Finalizar Pedido no WhatsApp";
         btnWhats.style.background = "var(--success)";
     }
 }
@@ -188,18 +209,39 @@ function abrirCheckout() {
     window.open(LINK_MERCADO_PAGO, '_blank');
     const btnWhats = document.getElementById("btn-finalizar");
     btnWhats.style.display = "block";
-    btnWhats.innerText = "✅ PAGAMENTO REALIZADO! Enviar no WhatsApp";
+    btnWhats.innerText = "✅ JÁ PAGUEI! Confirmar no WhatsApp";
     btnWhats.style.background = "#25D366";
-    alert("Abrimos o Mercado Pago em outra aba. Após pagar, volte aqui e clique no botão verde para enviar seu pedido!");
 }
 
 function add(nome){ carrinho.push(sabores.find(s => s.nome === nome)); atualizarContador(); }
 
 function addMeia(){
     const s1 = sabores[document.getElementById("sabor1").value], s2 = sabores[document.getElementById("sabor2").value], borda = parseFloat(document.getElementById("borda").value);
-    if(!s1 || !s2) return alert("Escolha os sabores!");
+    if(!s1 || !s2) return alert("Escolha os sabores primeiro!");
     carrinho.push({ nome: `Meia ${s1.nome.replace('Pizza do ','')} / ${s2.nome.replace('Pizza do ','')}`, preco: Math.max(s1.preco, s2.preco) + borda });
     atualizarContador();
+    alert("Pizza Meia a Meia adicionada!");
+}
+
+function abrirCombo(nome){
+    comboEmEdicao = sabores.find(s => s.nome === nome);
+    const config = configCombos[nome];
+    document.getElementById("combo-titulo").innerText = nome;
+    document.getElementById("combo-opcoes").innerHTML = config.map((p, i) => `
+        <div class="combo-item-box">
+            <strong style="font-size:12px;">Item ${i+1} (${p.t}):</strong>
+            <select class="c-s1">${sabores.filter(s => s.cat === p.t).map(s => `<option value="${s.nome}">${s.nome}</option>`).join("")}</select>
+            <select class="c-s2"><option value="">(Meia Opcional)</option>${sabores.filter(s => s.cat === p.t).map(s => `<option value="${s.nome}">${s.nome}</option>`).join("")}</select>
+        </div>`).join("");
+    document.getElementById("modal-combo").style.display = "flex";
+}
+
+function confirmarCombo(){
+    const s1 = document.querySelectorAll(".c-s1"), s2 = document.querySelectorAll(".c-s2");
+    const refri = document.getElementById("combo-refri").value;
+    let desc = Array.from(s1).map((s, i) => `Item ${i+1}: ${s2[i].value ? 'Meia '+s.value+' / Meia '+s2[i].value : s.value}`).join(" | ");
+    carrinho.push({ nome: `${comboEmEdicao.nome} (${refri})`, preco: comboEmEdicao.preco, obs: desc });
+    fecharModalCombo(); atualizarContador();
 }
 
 function atualizarContador(){ document.getElementById("contador").innerText = carrinho.length; }
@@ -211,7 +253,7 @@ function abrirCarrinho(){
     document.getElementById("itens").innerHTML = carrinho.map((p, i) => `
         <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:13px; border-bottom:1px solid #eee; padding-bottom:5px;">
             <div><b>${p.nome}</b><br><small style="color:#666">${p.obs || ''}</small></div>
-            <div>R$ ${p.preco.toFixed(2)} <button onclick="remover(${i})" style="color:red; border:none; background:none;">X</button></div>
+            <div>R$ ${p.preco.toFixed(2)} <button onclick="remover(${i})" style="color:red; border:none; background:none; cursor:pointer;">X</button></div>
         </div>`).join("");
     atualizarTotalModal();
     document.getElementById("modal").style.display = "flex";
@@ -222,38 +264,18 @@ function remover(i){ carrinho.splice(i,1); abrirCarrinho(); atualizarContador();
 function atualizarTotalModal(){
     const taxa = parseFloat(document.getElementById("bairro").value) || 0;
     const sub = carrinho.reduce((a, b) => a + b.preco, 0);
-    document.getElementById("total-display").innerHTML = `Subtotal: R$ ${sub.toFixed(2)} | Entrega: R$ ${taxa.toFixed(2)}<br><strong style="font-size:18px; color:var(--success)">Total: R$ ${(sub+taxa).toFixed(2)}</strong>`;
-}
-
-function abrirCombo(nome){
-    comboEmEdicao = sabores.find(s => s.nome === nome);
-    const config = configCombos[nome];
-    document.getElementById("combo-titulo").innerText = nome;
-    document.getElementById("combo-opcoes").innerHTML = config.map((p, i) => `
-        <div class="combo-item-box">
-            <strong style="font-size:12px;">Pizza ${i+1} (${p.t}):</strong>
-            <select class="c-s1">${sabores.filter(s => s.cat === p.t).map(s => `<option value="${s.nome}">${s.nome}</option>`).join("")}</select>
-            <select class="c-s2"><option value="">(Meia Opcional)</option>${sabores.filter(s => s.cat === p.t).map(s => `<option value="${s.nome}">${s.nome}</option>`).join("")}</select>
-        </div>`).join("");
-    document.getElementById("modal-combo").style.display = "flex";
-}
-
-function confirmarCombo(){
-    const s1 = document.querySelectorAll(".c-s1"), s2 = document.querySelectorAll(".c-s2");
-    const refri = document.getElementById("combo-refri").value;
-    let desc = Array.from(s1).map((s, i) => `P${i+1}: ${s2[i].value ? 'Meia '+s.value+' / Meia '+s2[i].value : s.value}`).join(" | ");
-    carrinho.push({ nome: `${comboEmEdicao.nome} (${refri})`, preco: comboEmEdicao.preco, obs: desc });
-    fecharModalCombo(); atualizarContador();
+    document.getElementById("total-display").innerHTML = `Subtotal: R$ ${sub.toFixed(2)} | Taxa Entrega: R$ ${taxa.toFixed(2)}<br><strong style="font-size:18px; color:var(--success)">Total: R$ ${(sub+taxa).toFixed(2)}</strong>`;
 }
 
 function finalizar(){
     const n = document.getElementById("nome").value, e = document.getElementById("endereco").value, b = document.getElementById("bairro"), p = document.getElementById("pagamento").value;
-    if(!n || !e || !b.value) return alert("Preencha todos os dados!");
+    if(!n || !e || !b.value) return alert("Por favor, preencha nome, endereço e bairro!");
     const taxa = parseFloat(b.value), sub = carrinho.reduce((a, b) => a + b.preco, 0);
+    const total = (sub+taxa).toFixed(2);
     let msg = `*NOVO PEDIDO - LA CASA DA PIZZA*%0A%0A*Cliente:* ${n}%0A*End:* ${e}%0A*Bairro:* ${b.options[b.selectedIndex].text}%0A*Pagamento:* ${p}%0A%0A*ITENS:*%0A`;
     carrinho.forEach(item => msg += `• ${item.nome} - R$ ${item.preco.toFixed(2)}%0A  ${item.obs || ''}%0A`);
-    msg += `%0A*TOTAL: R$ ${(sub+taxa).toFixed(2)}*`;
-    window.open(`https://wa.me/5561998791411?text=${msg}`);
+    msg += `%0A*TOTAL: R$ ${total}*`;
+    window.open(`https://wa.me/${WHATSAPP_NUM}?text=${msg}`);
 }
 
 window.onload = () => {
