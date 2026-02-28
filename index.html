@@ -1,273 +1,441 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>La Casa da Pizza</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Casa da Pizza | O Plano Perfeito</title>
 
-<link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#8B0000">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#8B0000">
 
-<style>
-  #splash {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: #8B0000;
-    display: flex; justify-content: center; align-items: center;
-    z-index: 9999;
-    transition: opacity 0.5s ease, visibility 0.5s;
-  }
-  #splash.hidden {
-    opacity: 0;
-    visibility: hidden;
-  }
-  #splash img { width: 150px; }
-</style>
+    <style>
+        :root {
+            --primary: #8B0000;
+            --primary-dark: #660000;
+            --accent: #ff3c00;
+            --success: #25D366;
+            --bg: #f8f8f8;
+            --text: #333;
+        }
 
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-window.OneSignalDeferred = window.OneSignalDeferred || [];
-OneSignalDeferred.push(async function(OneSignal) {
-  await OneSignal.init({
-    appId: "80dce65b-6f44-4b32-adcc-a6e3a6cceb10",
-    notifyButton: { enable: true }
-  });
-});
-</script>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            background-image: radial-gradient(#ddd 0.5px, transparent 0.5px);
+            background-size: 20px 20px;
+            color: var(--text);
+            padding-bottom: 100px;
+        }
 
+        /* Splash Screen */
+        #splash {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--primary);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+        #splash.hidden { opacity: 0; visibility: hidden; }
+        #splash img { width: 150px; animation: fadeIn 1s ease-in-out; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
+        /* Header & Banner */
+        .header {
+            background: #000;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            gap: 15px;
+        }
+        .header img { width: 70px; height: 70px; border-radius: 12px; border: 2px solid var(--primary); }
+        .header h1 { font-size: 22px; margin: 0; }
+
+        .banner {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* Categorias */
+        .categories {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            background: white;
+            overflow-x: auto;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            scrollbar-width: none;
+        }
+        .categories::-webkit-scrollbar { display: none; }
+        
+        .cat-btn {
+            padding: 8px 20px;
+            border-radius: 25px;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.3s;
+        }
+        .cat-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* Grid de Pizzas */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding: 15px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .card img { width: 100%; height: 200px; object-fit: cover; }
+        .card-content { padding: 15px; }
+        .card-content h3 { margin: 0 0 8px 0; font-size: 19px; }
+        .card-content .desc { font-size: 13px; color: #666; line-height: 1.4; min-height: 38px; }
+        .price { color: var(--primary); font-weight: 800; font-size: 20px; margin: 12px 0; display: block; }
+
+        /* Botões */
+        .add-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Meia a Meia */
+        .meia-box {
+            background: white;
+            margin: 15px;
+            padding: 20px;
+            border-radius: 18px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 2px dashed var(--primary);
+        }
+        .meia-box h2 { margin-top: 0; font-size: 20px; color: var(--primary); }
+        .meia-box select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+
+        /* Carrinho Flutuante */
+        .cart-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            background: var(--success);
+            color: white;
+            padding: 16px;
+            border-radius: 50px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        @keyframes cartBounce {
+            0% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.1); }
+            100% { transform: translateX(-50%) scale(1); }
+        }
+        .cart-bounce { animation: cartBounce 0.4s ease-out; }
+
+        #contador {
+            background: white;
+            color: var(--success);
+            padding: 2px 10px;
+            border-radius: 20px;
+            margin-left: 10px;
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none; justify-content: center; align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 450px;
+            padding: 25px;
+            border-radius: 20px;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        .modal-content input, .modal-content select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        @media(min-width:768px){ .grid{grid-template-columns: 1fr 1fr} }
+        @media(min-width:1100px){ .grid{grid-template-columns: 1fr 1fr 1fr} }
+
+    </style>
 </head>
 <body>
 
 <div id="splash">
-  <img src="logo.png">
+    <img src="logo.png">
 </div>
 
 <header class="header">
-<img src="logo.png">
-<h1>La Casa da Pizza</h1>
+    <img src="logo.png">
+    <h1>La Casa da Pizza</h1>
 </header>
 
-<div class="banner">
-🔥 Entrega rápida • 40-60 min
-</div>
+<div class="banner">🔥 Entrega rápida em Águas Claras e Região • 40-60 min</div>
 
 <div class="categories">
-<button class="cat-btn active" onclick="filtrar(event,'todas')">Todas</button>
-<button class="cat-btn" onclick="filtrar(event,'salgada')">Salgadas</button>
-<button class="cat-btn" onclick="filtrar(event,'doce')">Doces</button>
+    <button class="cat-btn active" onclick="filtrar(event,'todas')">Todas</button>
+    <button class="cat-btn" onclick="filtrar(event,'salgada')">Salgadas</button>
+    <button class="cat-btn" onclick="filtrar(event,'doce')">Doces</button>
 </div>
 
 <div class="meia-box">
-<h2>🍕 Pizza Meia a Meia</h2>
-<select id="sabor1"></select>
-<select id="sabor2"></select>
-<select id="borda">
-<option value="0">Sem borda</option>
-<option value="8">Catupiry + R$ 8</option>
-<option value="8">Cheddar + R$ 8</option>
-<option value="10">Chocolate + R$ 10</option>
-</select>
-<button class="add-btn" onclick="addMeia()">Adicionar Meia a Meia</button>
+    <h2>🍕 Pizza Meia a Meia</h2>
+    <select id="sabor1"></select>
+    <select id="sabor2"></select>
+    <select id="borda">
+        <option value="0">Sem borda</option>
+        <option value="8">Catupiry + R$ 8</option>
+        <option value="8">Cheddar + R$ 8</option>
+        <option value="10">Chocolate + R$ 10</option>
+    </select>
+    <button class="add-btn" onclick="addMeia()">Adicionar Meia a Meia</button>
 </div>
 
 <div class="grid" id="lista"></div>
 
-<div class="cart-btn" onclick="abrirCarrinho()">
-🛒 Carrinho <span id="contador">0</span>
+<div class="cart-btn" id="cartBtn" onclick="abrirCarrinho()">
+    🛒 Carrinho <span id="contador">0</span>
 </div>
 
 <div class="modal" id="modal">
-<div class="modal-content">
-<h2>Seu Pedido</h2>
-<div id="itens"></div>
+    <div class="modal-content">
+        <h2>Seu Pedido</h2>
+        <div id="itens"></div>
+        
+        <div id="total-display" style="text-align:right; margin: 15px 0; font-weight: bold;"></div>
 
-<hr>
-<input id="nome" placeholder="Seu nome">
-<input id="endereco" placeholder="Rua e número">
-<input id="bairro" placeholder="Bairro">
+        <hr>
+        <input id="nome" placeholder="Seu nome">
+        <input id="endereco" placeholder="Rua e número">
+        
+        <select id="bairro" onchange="atualizarTotalModal()">
+            <option value="" disabled selected>Escolha seu Bairro (Taxa)</option>
+            <option value="0">Retirada no Local (Grátis)</option>
+            <option value="5">Areal - R$ 5,00</option>
+            <option value="7">Arniqueiras - R$ 7,00</option>
+            <option value="10">Taguatinga Sul - R$ 10,00</option>
+            <option value="10">Águas Claras - R$ 10,00</option>
+            <option value="10">Riacho Fundo I - R$ 10,00</option>
+            <option value="12">Samambaia Sul - R$ 12,00</option>
+            <option value="15">Taguatinga Norte - R$ 15,00</option>
+            <option value="15">Samambaia Norte - R$ 15,00</option>
+        </select>
 
-<select id="pagamento">
-<option>Pix</option>
-<option>Dinheiro</option>
-<option>Cartão</option>
-</select>
+        <select id="pagamento">
+            <option disabled selected>Forma de Pagamento</option>
+            <option>Pix</option>
+            <option>Dinheiro</option>
+            <option>Cartão</option>
+        </select>
 
-<button class="add-btn" onclick="finalizar()">Finalizar Pedido via WhatsApp</button>
-<button onclick="fecharCarrinho()">Fechar</button>
-</div>
+        <button class="add-btn" onclick="finalizar()" style="background: var(--success); margin-top: 10px;">Finalizar no WhatsApp</button>
+        <button onclick="fecharCarrinho()" style="background:none; border:none; color:#999; width:100%; margin-top:10px; cursor:pointer;">Fechar</button>
+    </div>
 </div>
 
 <script>
-let sabores=[
-// 🍕 SALGADAS
-{nome:"Pizza do Professor",cat:"salgada",preco:49.90,img:"professor.jpg",desc:"Molho de tomate, mussarela, carne moída temperada, bacon crocante e molho barbecue especial."},
-{nome:"Pizza da Lisboa",cat:"salgada",preco:49.90,img:"lisboa.jpg",desc:"Molho de tomate, mussarela, bacon crocante e abacaxi selecionado."},
-{nome:"Pizza do Berlim",cat:"salgada",preco:49.90,img:"berlim.jpg",desc:"Molho de tomate, mussarela, pepperoni fatiado e orégano."},
-{nome:"Pizza da Tóquio",cat:"salgada",preco:49.90,img:"toquio.jpg",desc:"Molho de tomate, mussarela, atum, cebola, tomate, azeitona e orégano."},
-{nome:"Pizza do Rio",cat:"salgada",preco:49.90,img:"rio.jpg",desc:"Molho de tomate, mussarela, calabresa fatiada, cebola e orégano."},
-{nome:"Pizza da Nairóbi",cat:"salgada",preco:49.90,img:"nairobi.jpg",desc:"Molho de tomate, mussarela, frango desfiado, catupiry e orégano."},
-{nome:"Pizza do Palermo",cat:"salgada",preco:49.90,img:"palermo.jpg",desc:"Molho de tomate, mussarela, tomate fresco, manjericão e orégano."},
-{nome:"Pizza do Marselha",cat:"salgada",preco:49.90,img:"marselha.jpg",desc:"Molho de tomate, mussarela, cogumelos, presunto e orégano."},
-{nome:"Pizza do Denver",cat:"salgada",preco:49.90,img:"denver.jpg",desc:"Molho de tomate, mussarela, calabresa, pimenta calabresa e orégano."},
-{nome:"Pizza do Oslo",cat:"salgada",preco:49.90,img:"oslo.jpg",desc:"Molho de tomate, mussarela, carne seca desfiada, cebola, catupiry e orégano."},
-{nome:"Pizza da Estocolmo",cat:"salgada",preco:49.90,img:"estocolmo.jpg",desc:"Molho de tomate, mussarela, presunto, tomate, azeitona e orégano."},
-{nome:"Pizza do Moscou",cat:"salgada",preco:49.90,img:"moscou.jpg",desc:"Molho de tomate, mussarela, queijo prato, cheddar, catupiry e orégano."},
-{nome:"Pizza do Bogotá",cat:"salgada",preco:49.90,img:"bogota.jpg",desc:"Molho de tomate, mussarela, carne moída, milho e orégano."},
-// 🍫 DOCES
-{nome:"Pizza de Confete",cat:"doce",preco:39.90,img:"confete.jpg",desc:"Chocolate ao leite cremoso coberto com confetes coloridos."},
-{nome:"Pizza de Banana Nevada",cat:"doce",preco:39.90,img:"banana.jpg",desc:"Banana fatiada, chocolate branco e leite em pó polvilhado."},
-{nome:"Pizza de Romeo e Julieta",cat:"doce",preco:39.90,img:"romeo.jpg",desc:"Mussarela derretida com generosa camada de goiabada."},
-{nome:"Pizza de Chocolate",cat:"doce",preco:39.90,img:"chocolate.jpg",desc:"Chocolate ao leite cremoso espalhado sobre a massa."},
-{nome:"Pizza de Prestígio",cat:"doce",preco:39.90,img:"prestigio.jpg",desc:"Chocolate ao leite com coco ralado especial."}
+const sabores = [
+    {nome:"Pizza do Professor",cat:"salgada",preco:49.90,img:"professor.jpg",desc:"Mussarela, carne moída temperada, bacon e barbecue."},
+    {nome:"Pizza da Lisboa",cat:"salgada",preco:49.90,img:"lisboa.jpg",desc:"Mussarela, bacon crocante e abacaxi selecionado."},
+    {nome:"Pizza do Berlim",cat:"salgada",preco:49.90,img:"berlim.jpg",desc:"Molho de tomate, mussarela e pepperoni fatiado."},
+    {nome:"Pizza da Tóquio",cat:"salgada",preco:49.90,img:"toquio.jpg",desc:"Mussarela, atum, cebola, tomate e azeitona."},
+    {nome:"Pizza do Rio",cat:"salgada",preco:49.90,img:"rio.jpg",desc:"Mussarela, calabresa fatiada, cebola e orégano."},
+    {nome:"Pizza da Nairóbi",cat:"salgada",preco:49.90,img:"nairobi.jpg",desc:"Mussarela, frango desfiado e catupiry original."},
+    {nome:"Pizza do Palermo",cat:"salgada",preco:49.90,img:"palermo.jpg",desc:"Mussarela, tomate fresco, manjericão e orégano."},
+    {nome:"Pizza do Marselha",cat:"salgada",preco:49.90,img:"marselha.jpg",desc:"Mussarela, cogumelos, presunto e orégano."},
+    {nome:"Pizza do Denver",cat:"salgada",preco:49.90,img:"denver.jpg",desc:"Mussarela, calabresa e pimenta calabresa."},
+    {nome:"Pizza do Oslo",cat:"salgada",preco:49.90,img:"oslo.jpg",desc:"Mussarela, carne seca, cebola e catupiry."},
+    {nome:"Pizza da Estocolmo",cat:"salgada",preco:49.90,img:"estocolmo.jpg",desc:"Mussarela, presunto, tomate e azeitona."},
+    {nome:"Pizza do Moscou",cat:"salgada",preco:49.90,img:"moscou.jpg",desc:"Queijo prato, cheddar, catupiry e mussarela."},
+    {nome:"Pizza do Bogotá",cat:"salgada",preco:49.90,img:"bogota.jpg",desc:"Mussarela, carne moída, milho e orégano."},
+    {nome:"Pizza de Confete",cat:"doce",preco:39.90,img:"confete.jpg",desc:"Chocolate ao leite cremoso com confetes."},
+    {nome:"Pizza de Banana Nevada",cat:"doce",preco:39.90,img:"banana.jpg",desc:"Banana, chocolate branco e leite em pó."},
+    {nome:"Pizza de Romeo e Julieta",cat:"doce",preco:39.90,img:"romeo.jpg",desc:"Mussarela derretida com goiabada cascão."},
+    {nome:"Pizza de Chocolate",cat:"doce",preco:39.90,img:"chocolate.jpg",desc:"Chocolate ao leite cremoso."},
+    {nome:"Pizza de Prestígio",cat:"doce",preco:39.90,img:"prestigio.jpg",desc:"Chocolate ao leite com coco ralado."}
 ];
 
-let carrinho=[];
-
-function calcularTotal(){
-  let total=0;
-  carrinho.forEach(p=> total+=p.preco);
-  return total;
-}
+let carrinho = [];
 
 function preencherMeia(){
-  let s1 = document.getElementById("sabor1");
-  let s2 = document.getElementById("sabor2");
-  let options="";
-  sabores.forEach((s,i)=>{
-    options+=`<option value="${i}">${s.nome} - R$ ${s.preco.toFixed(2)}</option>`;
-  });
-  s1.innerHTML=options;
-  s2.innerHTML=options;
+    const s1 = document.getElementById("sabor1");
+    const s2 = document.getElementById("sabor2");
+    let options = '<option value="" disabled selected>Selecione o sabor...</option>';
+    sabores.forEach((s, i) => {
+        options += `<option value="${i}">${s.nome} - R$ ${s.preco.toFixed(2)}</option>`;
+    });
+    s1.innerHTML = options;
+    s2.innerHTML = options;
 }
 
 function render(cat){
-  let lista = document.getElementById("lista");
-  let html="";
-  sabores.filter(s=>cat==="todas"||s.cat===cat).forEach((s,i)=>{
-    // Buscamos o índice real no array 'sabores' para o botão de adicionar
-    let indexReal = sabores.findIndex(p => p.nome === s.nome);
-    html+=`
-    <div class="card">
-      <img src="${s.img}">
-      <div class="card-content">
-        <h3>${s.nome}</h3>
-        <div>${s.desc}</div>
-        <div class="price">R$ ${s.preco.toFixed(2)}</div>
-        <button class="add-btn" onclick="add(${indexReal})">Adicionar</button>
-      </div>
-    </div>`;
-  });
-  lista.innerHTML=html;
+    const lista = document.getElementById("lista");
+    let html = "";
+    sabores.filter(s => cat === "todas" || s.cat === cat).forEach((s) => {
+        let indexReal = sabores.findIndex(p => p.nome === s.nome);
+        html += `
+        <div class="card">
+            <img src="${s.img}" alt="${s.nome}">
+            <div class="card-content">
+                <h3>${s.nome}</h3>
+                <div class="desc">${s.desc}</div>
+                <div class="price">R$ ${s.preco.toFixed(2)}</div>
+                <button class="add-btn" onclick="add(${indexReal}, event)">Adicionar</button>
+            </div>
+        </div>`;
+    });
+    lista.innerHTML = html;
 }
 
-function filtrar(e,cat){
-  document.querySelectorAll(".cat-btn").forEach(b=>b.classList.remove("active"));
-  e.target.classList.add("active");
-  render(cat);
+function filtrar(e, cat){
+    document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
+    e.target.classList.add("active");
+    render(cat);
 }
 
-function add(i){
-  carrinho.push(sabores[i]);
-  atualizarContador();
+function add(i, event){
+    carrinho.push(sabores[i]);
+    const btn = event.target;
+    btn.innerText = "✅ Adicionado";
+    btn.style.background = "#28a745";
+    setTimeout(() => { btn.innerText = "Adicionar"; btn.style.background = ""; }, 1000);
+    atualizarContador();
 }
 
 function addMeia(){
-  let i1 = document.getElementById("sabor1").value;
-  let i2 = document.getElementById("sabor2").value;
-  let borda = parseFloat(document.getElementById("borda").value);
-
-  if(i1===i2) return alert("Escolha sabores diferentes para a pizza meia a meia!");
-
-  let s1=sabores[i1];
-  let s2=sabores[i2];
-  let precoBase = Math.max(s1.preco, s2.preco);
-  let precoFinal = precoBase + borda;
-
-  carrinho.push({
-    nome: `Meia ${s1.nome} / Meia ${s2.nome}${borda > 0 ? ' (C/ Borda)' : ''}`,
-    preco: precoFinal
-  });
-  atualizarContador();
-  alert("Meia a Meia adicionada!");
+    const i1 = document.getElementById("sabor1").value;
+    const i2 = document.getElementById("sabor2").value;
+    const borda = parseFloat(document.getElementById("borda").value);
+    if(!i1 || !i2) return alert("Escolha os dois sabores!");
+    const s1 = sabores[i1];
+    const s2 = sabores[i2];
+    const precoFinal = Math.max(s1.preco, s2.preco) + borda;
+    carrinho.push({ nome: `Meia ${s1.nome} / Meia ${s2.nome}${borda > 0 ? ' (C/ Borda)' : ''}`, preco: precoFinal });
+    atualizarContador();
+    alert("Pizza Meia a Meia adicionada!");
 }
 
 function atualizarContador(){
-  document.getElementById("contador").innerText = carrinho.length;
+    document.getElementById("contador").innerText = carrinho.length;
+    const btn = document.getElementById("cartBtn");
+    btn.classList.add("cart-bounce");
+    setTimeout(() => btn.classList.remove("cart-bounce"), 400);
+}
+
+function atualizarTotalModal() {
+    const taxa = parseFloat(document.getElementById("bairro").value) || 0;
+    const subtotal = carrinho.reduce((a, b) => a + b.preco, 0);
+    const total = subtotal + taxa;
+    document.getElementById("total-display").innerHTML = `
+        <div style="font-weight:normal; font-size:14px; color:#666">Subtotal: R$ ${subtotal.toFixed(2)}</div>
+        <div style="font-weight:normal; font-size:14px; color:#666">Entrega: R$ ${taxa.toFixed(2)}</div>
+        <div style="font-size:18px; color:var(--primary)">Total: R$ ${total.toFixed(2)}</div>
+    `;
 }
 
 function abrirCarrinho(){
-  let modal = document.getElementById("modal");
-  let itensDiv = document.getElementById("itens");
-  let html="";
-  let total=calcularTotal();
-
-  if(carrinho.length === 0) {
-    html = "<p>Seu carrinho está vazio.</p>";
-  } else {
-    carrinho.forEach((p,i)=>{
-      html+=`<div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-        <span>${p.nome} - <b>R$ ${p.preco.toFixed(2)}</b></span>
-        <button onclick="remover(${i})" style="background:red; color:white; border:none; border-radius:4px; padding:2px 8px; cursor:pointer;">X</button>
-      </div>`;
-    });
-    html+=`<br><strong>Total: R$ ${total.toFixed(2)}</strong>`;
-  }
-  
-  itensDiv.innerHTML=html;
-  modal.style.display="flex";
+    const modal = document.getElementById("modal");
+    const itensDiv = document.getElementById("itens");
+    let html = "";
+    if(carrinho.length === 0) {
+        html = "<p>Carrinho vazio.</p>";
+    } else {
+        carrinho.forEach((p, i) => {
+            html += `<div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <span>${p.nome}</span>
+                <span><b>R$ ${p.preco.toFixed(2)}</b> <button onclick="remover(${i})" style="color:red; border:none; background:none; cursor:pointer;">X</button></span>
+            </div>`;
+        });
+    }
+    itensDiv.innerHTML = html;
+    atualizarTotalModal();
+    modal.style.display = "flex";
 }
 
 function remover(i){
-  carrinho.splice(i,1);
-  atualizarContador();
-  abrirCarrinho();
+    carrinho.splice(i, 1);
+    atualizarContador();
+    abrirCarrinho();
 }
 
-function fecharCarrinho(){
-  document.getElementById("modal").style.display="none";
-}
+function fecharCarrinho(){ document.getElementById("modal").style.display = "none"; }
 
 function finalizar(){
-  if(carrinho.length === 0) return alert("Adicione itens ao carrinho!");
-  
-  let nome = document.getElementById("nome").value;
-  let endereco = document.getElementById("endereco").value;
-  let bairro = document.getElementById("bairro").value;
-  let pag = document.getElementById("pagamento").value;
+    const nome = document.getElementById("nome").value;
+    const endereco = document.getElementById("endereco").value;
+    const bairroSelect = document.getElementById("bairro");
+    const pag = document.getElementById("pagamento").value;
 
-  if(!nome || !endereco || !bairro) return alert("Por favor, preencha nome, endereço e bairro!");
+    if(!nome || !endereco || !bairroSelect.value) return alert("Preencha todos os campos!");
 
-  let texto = `*NOVO PEDIDO - LA CASA DA PIZZA*%0A%0A`;
-  texto += `*Cliente:* ${nome}%0A`;
-  texto += `*Endereço:* ${endereco}%0A`;
-  texto += `*Bairro:* ${bairro}%0A`;
-  texto += `*Pagamento:* ${pag}%0A`;
-  texto += `----------------------------%0A`;
-  texto += `*PEDIDO:*%0A`;
-  
-  carrinho.forEach(p => {
-    texto += `• ${p.nome} - R$ ${p.preco.toFixed(2)}%0A`;
-  });
+    const taxa = parseFloat(bairroSelect.value);
+    const bairroNome = bairroSelect.options[bairroSelect.selectedIndex].text;
+    const subtotal = carrinho.reduce((a, b) => a + b.preco, 0);
+    const totalFinal = subtotal + taxa;
 
-  texto += `----------------------------%0A`;
-  texto += `*TOTAL: R$ ${calcularTotal().toFixed(2)}*`;
+    let texto = `*NOVO PEDIDO - LA CASA DA PIZZA*%0A%0A`;
+    texto += `*Cliente:* ${nome}%0A*Endereço:* ${endereco}%0A*Bairro:* ${bairroNome}%0A*Pagamento:* ${pag}%0A%0A*ITENS:*%0A`;
+    carrinho.forEach(p => { texto += `• ${p.nome} - R$ ${p.preco.toFixed(2)}%0A`; });
+    texto += `%0A*TOTAL: R$ ${totalFinal.toFixed(2)}*`;
 
-  window.open(`https://wa.me/5561998791411?text=${texto}`);
+    window.open(`https://wa.me/5561998791411?text=${texto}`);
 }
 
-// Inicialização
-preencherMeia();
-render("todas");
-
-// 🕒 Comando para remover o Splash Screen após 2.5 segundos com animação
 window.onload = () => {
-  setTimeout(() => {
-    const splash = document.getElementById('splash');
-    splash.classList.add('hidden');
-  }, 2500);
+    preencherMeia();
+    render("todas");
+    setTimeout(() => document.getElementById('splash').classList.add('hidden'), 2000);
 };
-
 </script>
 
 </body>
