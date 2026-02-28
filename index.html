@@ -237,19 +237,43 @@ function atualizarTotalModal(){
 }
 
 function finalizar(){
-    const n = document.getElementById("nome").value, e = document.getElementById("endereco").value, b = document.getElementById("bairro"), p = document.getElementById("pagamento").value;
-    if(!n || !e || !b.value) return alert("Preencha todos os dados!");
-    const taxa = parseFloat(b.value), sub = carrinho.reduce((a, b) => a + b.preco, 0);
+    const n = document.getElementById("nome").value, 
+          e = document.getElementById("endereco").value, 
+          b = document.getElementById("bairro"), 
+          p = document.getElementById("pagamento").value;
+
+    if(!n || !e || !b.value) return alert("Por favor, preencha todos os dados!");
+    
+    const taxa = parseFloat(b.value), 
+          sub = carrinho.reduce((a, b) => a + b.preco, 0);
     const total = (sub+taxa).toFixed(2);
+    
     let msg = `*NOVO PEDIDO - LA CASA DA PIZZA*%0A%0A*Cliente:* ${n}%0A*End:* ${e}%0A*Bairro:* ${b.options[b.selectedIndex].text}%0A*Pagamento:* ${p}%0A%0A*ITENS:*%0A`;
     carrinho.forEach(item => msg += `• ${item.nome} - R$ ${item.preco.toFixed(2)}%0A  ${item.obs || ''}%0A`);
     msg += `%0A*TOTAL: R$ ${total}*`;
+
+    // CORREÇÃO DO CONFLITO:
     if(p === "Pix Online") {
+        // Primeiro, abrimos o Mercado Pago em uma nova aba
         window.open(LINK_MERCADO_PAGO, '_blank');
-        alert("Estamos te levando para o Pagamento. Após pagar, clique em OK para enviar o pedido no WhatsApp!");
+        
+        // Mudamos o texto do botão para o cliente saber que agora deve enviar o Whats
+        const btn = document.getElementById("btn-finalizar");
+        btn.innerText = "✅ JÁ PAGUEI! Enviar Pedido no WhatsApp";
+        btn.style.background = "#25D366";
+        
+        // Alteramos a função do botão temporariamente para não abrir o MP de novo
+        btn.onclick = () => {
+            window.open(`https://wa.me/5561998791411?text=${msg}`);
+        };
+
+        alert("Abrimos a aba de pagamento! Após realizar o Pix, clique no botão verde 'JÁ PAGUEI' para nos enviar o pedido no WhatsApp.");
+    } else {
+        // Se for pagamento na entrega, abre o WhatsApp direto normalmente
+        window.open(`https://wa.me/5561998791411?text=${msg}`);
     }
-    window.open(`https://wa.me/5561998791411?text=${msg}`);
 }
+
 
 window.onload = () => {
     let opts = sabores.filter(s => s.cat !== 'combo').map((s, i) => `<option value="${sabores.indexOf(s)}">${s.nome}</option>`).join("");
