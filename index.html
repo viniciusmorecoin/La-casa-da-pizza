@@ -3,26 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-</script>
 <title>La Casa da Pizza</title>
 
 <link rel="stylesheet" href="style.css">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#8B0000">
 
-   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<!-- 🔔 OneSignal Push -->
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "80dce65b-6f44-4b32-adcc-a6e3a6cceb10",
-      safari_web_id: "web.onesignal.auto.1b4e40e7-0d3a-47c7-b9a8-378d25a10892",
-      notifyButton: {
-        enable: true,
-      },
-    });
+window.OneSignalDeferred = window.OneSignalDeferred || [];
+OneSignalDeferred.push(async function(OneSignal) {
+  await OneSignal.init({
+    appId: "80dce65b-6f44-4b32-adcc-a6e3a6cceb10",
+    notifyButton: { enable: true }
   });
+});
+</script>
+
 </head>
 <body>
 
@@ -94,48 +92,59 @@
 
 <script>
 
-// ARRAY COMPLETO
 let sabores=[
 
-{nome:"Pizza do Professor",cat:"salgada",preco:49.90,img:"professor.jpg",desc:"Molho de tomate, mussarela, carne moída, bacon e barbecue."},
-{nome:"Pizza da Lisboa",cat:"salgada",preco:49.90,img:"lisboa.jpg",desc:"Molho de tomate, mussarela, bacon e abacaxi."},
-{nome:"Pizza do Berlim",cat:"salgada",preco:49.90,img:"berlim.jpg",desc:"Molho de tomate, mussarela, pepperoni e orégano."},
+// 🍕 SALGADAS
+
+{nome:"Pizza do Professor",cat:"salgada",preco:49.90,img:"professor.jpg",desc:"Molho de tomate, mussarela, carne moída temperada, bacon crocante e molho barbecue especial."},
+
+{nome:"Pizza da Lisboa",cat:"salgada",preco:49.90,img:"lisboa.jpg",desc:"Molho de tomate, mussarela, bacon crocante e abacaxi selecionado."},
+
+{nome:"Pizza do Berlim",cat:"salgada",preco:49.90,img:"berlim.jpg",desc:"Molho de tomate, mussarela, pepperoni fatiado e orégano."},
+
 {nome:"Pizza da Tóquio",cat:"salgada",preco:49.90,img:"toquio.jpg",desc:"Molho de tomate, mussarela, atum, cebola, tomate, azeitona e orégano."},
-{nome:"Pizza do Rio",cat:"salgada",preco:49.90,img:"rio.jpg",desc:"Molho de tomate, mussarela, calabresa, cebola e orégano."},
-{nome:"Pizza da Nairóbi",cat:"salgada",preco:49.90,img:"nairobi.jpg",desc:"Molho de tomate, mussarela, frango, catupiry e orégano."},
-{nome:"Pizza do Palermo",cat:"salgada",preco:49.90,img:"palermo.jpg",desc:"Molho de tomate, mussarela, tomate, manjericão e orégano."},
-{nome:"Pizza do Marselha",cat:"salgada",preco:49.90,img:"marselha.jpg",desc:"Molho de tomate, mussarela, cogumelo, presunto e orégano."},
+
+{nome:"Pizza do Rio",cat:"salgada",preco:49.90,img:"rio.jpg",desc:"Molho de tomate, mussarela, calabresa fatiada, cebola e orégano."},
+
+{nome:"Pizza da Nairóbi",cat:"salgada",preco:49.90,img:"nairobi.jpg",desc:"Molho de tomate, mussarela, frango desfiado, catupiry e orégano."},
+
+{nome:"Pizza do Palermo",cat:"salgada",preco:49.90,img:"palermo.jpg",desc:"Molho de tomate, mussarela, tomate fresco, manjericão e orégano."},
+
+{nome:"Pizza do Marselha",cat:"salgada",preco:49.90,img:"marselha.jpg",desc:"Molho de tomate, mussarela, cogumelos, presunto e orégano."},
+
 {nome:"Pizza do Denver",cat:"salgada",preco:49.90,img:"denver.jpg",desc:"Molho de tomate, mussarela, calabresa, pimenta calabresa e orégano."},
-{nome:"Pizza do Oslo",cat:"salgada",preco:49.90,img:"oslo.jpg",desc:"Molho de tomate, mussarela, carne seca, cebola, catupiry e orégano."},
+
+{nome:"Pizza do Oslo",cat:"salgada",preco:49.90,img:"oslo.jpg",desc:"Molho de tomate, mussarela, carne seca desfiada, cebola, catupiry e orégano."},
+
 {nome:"Pizza da Estocolmo",cat:"salgada",preco:49.90,img:"estocolmo.jpg",desc:"Molho de tomate, mussarela, presunto, tomate, azeitona e orégano."},
+
 {nome:"Pizza do Moscou",cat:"salgada",preco:49.90,img:"moscou.jpg",desc:"Molho de tomate, mussarela, queijo prato, cheddar, catupiry e orégano."},
+
 {nome:"Pizza do Bogotá",cat:"salgada",preco:49.90,img:"bogota.jpg",desc:"Molho de tomate, mussarela, carne moída, milho e orégano."},
 
-{nome:"Pizza de Confete",cat:"doce",preco:39.90,img:"confete.jpg",desc:"Chocolate ao leite com confetes coloridos."},
-{nome:"Pizza de Banana Nevada",cat:"doce",preco:39.90,img:"banana.jpg",desc:"Banana, chocolate branco e leite em pó."},
-{nome:"Pizza de Romeo e Julieta",cat:"doce",preco:39.90,img:"romeo.jpg",desc:"Mussarela e goiabada."},
-{nome:"Pizza de Chocolate",cat:"doce",preco:39.90,img:"chocolate.jpg",desc:"Chocolate ao leite."},
-{nome:"Pizza de Prestígio",cat:"doce",preco:39.90,img:"prestigio.jpg",desc:"Chocolate ao leite com coco."}
+// 🍫 DOCES
+
+{nome:"Pizza de Confete",cat:"doce",preco:39.90,img:"confete.jpg",desc:"Chocolate ao leite cremoso coberto com confetes coloridos."},
+
+{nome:"Pizza de Banana Nevada",cat:"doce",preco:39.90,img:"banana.jpg",desc:"Banana fatiada, chocolate branco e leite em pó polvilhado."},
+
+{nome:"Pizza de Romeo e Julieta",cat:"doce",preco:39.90,img:"romeo.jpg",desc:"Mussarela derretida com generosa camada de goiabada."},
+
+{nome:"Pizza de Chocolate",cat:"doce",preco:39.90,img:"chocolate.jpg",desc:"Chocolate ao leite cremoso espalhado sobre a massa."},
+
+{nome:"Pizza de Prestígio",cat:"doce",preco:39.90,img:"prestigio.jpg",desc:"Chocolate ao leite com coco ralado especial."}
 
 ];
 
 let carrinho=[];
-
-// Carregar carrinho salvo
-let carrinhoSalvo = localStorage.getItem("carrinho");
-if(carrinhoSalvo){
-  carrinho = JSON.parse(carrinhoSalvo);
-  atualizarContador();
-}
-
 let desconto=0;
 let cupomAplicado=null;
 
-const cupons={
-"PIZZA10":{tipo:"percentual",valor:10},
-"CASA20":{tipo:"percentual",valor:20},
-"PROMO5":{tipo:"fixo",valor:5}
-};
+function calcularTotal(){
+  let total=0;
+  carrinho.forEach(p=> total+=p.preco);
+  return total;
+}
 
 function preencherMeia(){
 let options="";
@@ -154,7 +163,7 @@ html+=`
 <img src="${s.img}">
 <div class="card-content">
 <h3>${s.nome}</h3>
-<div class="desc">${s.desc}</div>
+<div>${s.desc}</div>
 <div class="price">R$ ${s.preco.toFixed(2)}</div>
 <button class="add-btn" onclick="add(${i})">Adicionar</button>
 </div>
@@ -171,62 +180,38 @@ render(cat);
 
 function add(i){
 carrinho.push(sabores[i]);
-animar();
 atualizarContador();
-localStorage.setItem("carrinho", JSON.stringify(carrinho));
 }
 
 function addMeia(){
 let i1=sabor1.value;
 let i2=sabor2.value;
 let borda=parseFloat(document.getElementById("borda").value);
+
 if(i1===i2)return alert("Escolha sabores diferentes!");
+
 let s1=sabores[i1];
 let s2=sabores[i2];
 let preco=Math.max(s1.preco,s2.preco)+borda;
+
 carrinho.push({nome:"Meia a Meia: "+s1.nome+" / "+s2.nome,preco:preco});
-animar();
 atualizarContador();
-localStorage.setItem("carrinho", JSON.stringify(carrinho));
 }
 
 function atualizarContador(){
 contador.innerText=carrinho.length;
 }
 
-function animar(){
-let btn=document.querySelector(".cart-btn");
-btn.classList.add("pulse");
-setTimeout(()=>btn.classList.remove("pulse"),400);
-}
-
 function abrirCarrinho(){
-
 let html="";
 let total=calcularTotal();
-let bairro = document.getElementById("bairro")?.value?.toLowerCase() || "";
-let taxa = 0;
-
-if(bairro.includes("centro")) taxa = 5;
-if(bairro.includes("jardim")) taxa = 8;
 
 carrinho.forEach((p,i)=>{
 html+=`${p.nome} - R$ ${p.preco.toFixed(2)} 
-<button class="remover" onclick="remover(${i})">X</button><br><br>`;
+<button onclick="remover(${i})">X</button><br><br>`;
 });
 
-if(desconto>0){
-html+=`<div style="color:green;">Desconto: - R$ ${desconto.toFixed(2)}</div>`;
-total -= desconto;
-}
-
-if(taxa>0){
-html+=`<div>Taxa de entrega: R$ ${taxa.toFixed(2)}</div>`;
-total += taxa;
-}
-
 html+=`<strong>Total: R$ ${total.toFixed(2)}</strong>`;
-
 itens.innerHTML=html;
 modal.style.display="flex";
 }
@@ -235,7 +220,6 @@ function remover(i){
 carrinho.splice(i,1);
 atualizarContador();
 abrirCarrinho();
-localStorage.setItem("carrinho", JSON.stringify(carrinho));
 }
 
 function fecharCarrinho(){
@@ -248,67 +232,12 @@ carrinho.forEach(p=>{
 msg+=p.nome+" - R$ "+p.preco.toFixed(2)+"%0A";
 });
 window.open("https://wa.me/5561998791411?text="+msg);
-localStorage.removeItem("carrinho");
-}
-
-function aplicarCupom(){
-
-let codigo=document.getElementById("cupomInput").value.toUpperCase();
-
-if(cupomAplicado){
-document.getElementById("cupomMsg").innerHTML="❌ Cupom já aplicado.";
-return;
-}
-
-if(!cupons[codigo]){
-document.getElementById("cupomMsg").innerHTML="❌ Cupom inválido.";
-return;
-}
-
-let total=calcularTotal();
-
-if(cupons[codigo].tipo==="percentual"){
-desconto=total*(cupons[codigo].valor/100);
-}else{
-desconto=cupons[codigo].valor;
-}
-
-cupomAplicado=codigo;
-
-document.getElementById("cupomMsg").innerHTML="✅ Cupom aplicado!";
-abrirCarrinho();
 }
 
 preencherMeia();
 render("todas");
 
-if("serviceWorker" in navigator){
-navigator.serviceWorker.register("service-worker.js");
-}
-
-window.addEventListener("load", ()=>{
-setTimeout(()=>{
-document.getElementById("splash").style.display="none";
-},1500);
-});
-
-if(!localStorage.getItem("instalado")){
-  desconto = calcularTotal()*0.10;
-  cupomAplicado = "APP10";
-  localStorage.setItem("instalado", true);
-}
-
-function admin(){
-let senha = prompt("Digite a senha:");
-if(senha==="1234"){
-alert("Total de pedidos hoje: "+carrinho.length);
-}else{
-alert("Senha incorreta");
-}
-}
-
 </script>
 
 </body>
-<button onclick="admin()" style="position:fixed;top:10px;right:10px;opacity:0.2;">⚙</button>
 </html>
