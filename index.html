@@ -9,7 +9,22 @@
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#8B0000">
 
-<!-- 🔔 OneSignal Push -->
+<style>
+  #splash {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #8B0000;
+    display: flex; justify-content: center; align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease, visibility 0.5s;
+  }
+  #splash.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+  #splash img { width: 150px; }
+</style>
+
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
 window.OneSignalDeferred = window.OneSignalDeferred || [];
@@ -45,17 +60,14 @@ OneSignalDeferred.push(async function(OneSignal) {
 
 <div class="meia-box">
 <h2>🍕 Pizza Meia a Meia</h2>
-
 <select id="sabor1"></select>
 <select id="sabor2"></select>
-
 <select id="borda">
 <option value="0">Sem borda</option>
 <option value="8">Catupiry + R$ 8</option>
 <option value="8">Cheddar + R$ 8</option>
 <option value="10">Chocolate + R$ 10</option>
 </select>
-
 <button class="add-btn" onclick="addMeia()">Adicionar Meia a Meia</button>
 </div>
 
@@ -70,11 +82,7 @@ OneSignalDeferred.push(async function(OneSignal) {
 <h2>Seu Pedido</h2>
 <div id="itens"></div>
 
-<h3>Cupom de Desconto</h3>
-<input id="cupomInput" placeholder="Digite seu cupom">
-<button class="add-btn" onclick="aplicarCupom()">Aplicar Cupom</button>
-<div id="cupomMsg" style="margin-top:8px;font-size:14px;"></div>
-
+<hr>
 <input id="nome" placeholder="Seu nome">
 <input id="endereco" placeholder="Rua e número">
 <input id="bairro" placeholder="Bairro">
@@ -85,60 +93,36 @@ OneSignalDeferred.push(async function(OneSignal) {
 <option>Cartão</option>
 </select>
 
-<button class="add-btn" onclick="finalizar()">Finalizar Pedido</button>
+<button class="add-btn" onclick="finalizar()">Finalizar Pedido via WhatsApp</button>
 <button onclick="fecharCarrinho()">Fechar</button>
 </div>
 </div>
 
 <script>
-
 let sabores=[
-
 // 🍕 SALGADAS
-
 {nome:"Pizza do Professor",cat:"salgada",preco:49.90,img:"professor.jpg",desc:"Molho de tomate, mussarela, carne moída temperada, bacon crocante e molho barbecue especial."},
-
 {nome:"Pizza da Lisboa",cat:"salgada",preco:49.90,img:"lisboa.jpg",desc:"Molho de tomate, mussarela, bacon crocante e abacaxi selecionado."},
-
 {nome:"Pizza do Berlim",cat:"salgada",preco:49.90,img:"berlim.jpg",desc:"Molho de tomate, mussarela, pepperoni fatiado e orégano."},
-
 {nome:"Pizza da Tóquio",cat:"salgada",preco:49.90,img:"toquio.jpg",desc:"Molho de tomate, mussarela, atum, cebola, tomate, azeitona e orégano."},
-
 {nome:"Pizza do Rio",cat:"salgada",preco:49.90,img:"rio.jpg",desc:"Molho de tomate, mussarela, calabresa fatiada, cebola e orégano."},
-
 {nome:"Pizza da Nairóbi",cat:"salgada",preco:49.90,img:"nairobi.jpg",desc:"Molho de tomate, mussarela, frango desfiado, catupiry e orégano."},
-
 {nome:"Pizza do Palermo",cat:"salgada",preco:49.90,img:"palermo.jpg",desc:"Molho de tomate, mussarela, tomate fresco, manjericão e orégano."},
-
 {nome:"Pizza do Marselha",cat:"salgada",preco:49.90,img:"marselha.jpg",desc:"Molho de tomate, mussarela, cogumelos, presunto e orégano."},
-
 {nome:"Pizza do Denver",cat:"salgada",preco:49.90,img:"denver.jpg",desc:"Molho de tomate, mussarela, calabresa, pimenta calabresa e orégano."},
-
 {nome:"Pizza do Oslo",cat:"salgada",preco:49.90,img:"oslo.jpg",desc:"Molho de tomate, mussarela, carne seca desfiada, cebola, catupiry e orégano."},
-
 {nome:"Pizza da Estocolmo",cat:"salgada",preco:49.90,img:"estocolmo.jpg",desc:"Molho de tomate, mussarela, presunto, tomate, azeitona e orégano."},
-
 {nome:"Pizza do Moscou",cat:"salgada",preco:49.90,img:"moscou.jpg",desc:"Molho de tomate, mussarela, queijo prato, cheddar, catupiry e orégano."},
-
 {nome:"Pizza do Bogotá",cat:"salgada",preco:49.90,img:"bogota.jpg",desc:"Molho de tomate, mussarela, carne moída, milho e orégano."},
-
 // 🍫 DOCES
-
 {nome:"Pizza de Confete",cat:"doce",preco:39.90,img:"confete.jpg",desc:"Chocolate ao leite cremoso coberto com confetes coloridos."},
-
 {nome:"Pizza de Banana Nevada",cat:"doce",preco:39.90,img:"banana.jpg",desc:"Banana fatiada, chocolate branco e leite em pó polvilhado."},
-
 {nome:"Pizza de Romeo e Julieta",cat:"doce",preco:39.90,img:"romeo.jpg",desc:"Mussarela derretida com generosa camada de goiabada."},
-
 {nome:"Pizza de Chocolate",cat:"doce",preco:39.90,img:"chocolate.jpg",desc:"Chocolate ao leite cremoso espalhado sobre a massa."},
-
 {nome:"Pizza de Prestígio",cat:"doce",preco:39.90,img:"prestigio.jpg",desc:"Chocolate ao leite com coco ralado especial."}
-
 ];
 
 let carrinho=[];
-let desconto=0;
-let cupomAplicado=null;
 
 function calcularTotal(){
   let total=0;
@@ -147,95 +131,142 @@ function calcularTotal(){
 }
 
 function preencherMeia(){
-let options="";
-sabores.forEach((s,i)=>{
-options+=`<option value="${i}">${s.nome} - R$ ${s.preco.toFixed(2)}</option>`;
-});
-sabor1.innerHTML=options;
-sabor2.innerHTML=options;
+  let s1 = document.getElementById("sabor1");
+  let s2 = document.getElementById("sabor2");
+  let options="";
+  sabores.forEach((s,i)=>{
+    options+=`<option value="${i}">${s.nome} - R$ ${s.preco.toFixed(2)}</option>`;
+  });
+  s1.innerHTML=options;
+  s2.innerHTML=options;
 }
 
 function render(cat){
-let html="";
-sabores.filter(s=>cat==="todas"||s.cat===cat).forEach((s,i)=>{
-html+=`
-<div class="card">
-<img src="${s.img}">
-<div class="card-content">
-<h3>${s.nome}</h3>
-<div>${s.desc}</div>
-<div class="price">R$ ${s.preco.toFixed(2)}</div>
-<button class="add-btn" onclick="add(${i})">Adicionar</button>
-</div>
-</div>`;
-});
-lista.innerHTML=html;
+  let lista = document.getElementById("lista");
+  let html="";
+  sabores.filter(s=>cat==="todas"||s.cat===cat).forEach((s,i)=>{
+    // Buscamos o índice real no array 'sabores' para o botão de adicionar
+    let indexReal = sabores.findIndex(p => p.nome === s.nome);
+    html+=`
+    <div class="card">
+      <img src="${s.img}">
+      <div class="card-content">
+        <h3>${s.nome}</h3>
+        <div>${s.desc}</div>
+        <div class="price">R$ ${s.preco.toFixed(2)}</div>
+        <button class="add-btn" onclick="add(${indexReal})">Adicionar</button>
+      </div>
+    </div>`;
+  });
+  lista.innerHTML=html;
 }
 
 function filtrar(e,cat){
-document.querySelectorAll(".cat-btn").forEach(b=>b.classList.remove("active"));
-e.target.classList.add("active");
-render(cat);
+  document.querySelectorAll(".cat-btn").forEach(b=>b.classList.remove("active"));
+  e.target.classList.add("active");
+  render(cat);
 }
 
 function add(i){
-carrinho.push(sabores[i]);
-atualizarContador();
+  carrinho.push(sabores[i]);
+  atualizarContador();
 }
 
 function addMeia(){
-let i1=sabor1.value;
-let i2=sabor2.value;
-let borda=parseFloat(document.getElementById("borda").value);
+  let i1 = document.getElementById("sabor1").value;
+  let i2 = document.getElementById("sabor2").value;
+  let borda = parseFloat(document.getElementById("borda").value);
 
-if(i1===i2)return alert("Escolha sabores diferentes!");
+  if(i1===i2) return alert("Escolha sabores diferentes para a pizza meia a meia!");
 
-let s1=sabores[i1];
-let s2=sabores[i2];
-let preco=Math.max(s1.preco,s2.preco)+borda;
+  let s1=sabores[i1];
+  let s2=sabores[i2];
+  let precoBase = Math.max(s1.preco, s2.preco);
+  let precoFinal = precoBase + borda;
 
-carrinho.push({nome:"Meia a Meia: "+s1.nome+" / "+s2.nome,preco:preco});
-atualizarContador();
+  carrinho.push({
+    nome: `Meia ${s1.nome} / Meia ${s2.nome}${borda > 0 ? ' (C/ Borda)' : ''}`,
+    preco: precoFinal
+  });
+  atualizarContador();
+  alert("Meia a Meia adicionada!");
 }
 
 function atualizarContador(){
-contador.innerText=carrinho.length;
+  document.getElementById("contador").innerText = carrinho.length;
 }
 
 function abrirCarrinho(){
-let html="";
-let total=calcularTotal();
+  let modal = document.getElementById("modal");
+  let itensDiv = document.getElementById("itens");
+  let html="";
+  let total=calcularTotal();
 
-carrinho.forEach((p,i)=>{
-html+=`${p.nome} - R$ ${p.preco.toFixed(2)} 
-<button onclick="remover(${i})">X</button><br><br>`;
-});
-
-html+=`<strong>Total: R$ ${total.toFixed(2)}</strong>`;
-itens.innerHTML=html;
-modal.style.display="flex";
+  if(carrinho.length === 0) {
+    html = "<p>Seu carrinho está vazio.</p>";
+  } else {
+    carrinho.forEach((p,i)=>{
+      html+=`<div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+        <span>${p.nome} - <b>R$ ${p.preco.toFixed(2)}</b></span>
+        <button onclick="remover(${i})" style="background:red; color:white; border:none; border-radius:4px; padding:2px 8px; cursor:pointer;">X</button>
+      </div>`;
+    });
+    html+=`<br><strong>Total: R$ ${total.toFixed(2)}</strong>`;
+  }
+  
+  itensDiv.innerHTML=html;
+  modal.style.display="flex";
 }
 
 function remover(i){
-carrinho.splice(i,1);
-atualizarContador();
-abrirCarrinho();
+  carrinho.splice(i,1);
+  atualizarContador();
+  abrirCarrinho();
 }
 
 function fecharCarrinho(){
-modal.style.display="none";
+  document.getElementById("modal").style.display="none";
 }
 
 function finalizar(){
-let msg="🍕 Novo Pedido%0A%0A";
-carrinho.forEach(p=>{
-msg+=p.nome+" - R$ "+p.preco.toFixed(2)+"%0A";
-});
-window.open("https://wa.me/5561998791411?text="+msg);
+  if(carrinho.length === 0) return alert("Adicione itens ao carrinho!");
+  
+  let nome = document.getElementById("nome").value;
+  let endereco = document.getElementById("endereco").value;
+  let bairro = document.getElementById("bairro").value;
+  let pag = document.getElementById("pagamento").value;
+
+  if(!nome || !endereco || !bairro) return alert("Por favor, preencha nome, endereço e bairro!");
+
+  let texto = `*NOVO PEDIDO - LA CASA DA PIZZA*%0A%0A`;
+  texto += `*Cliente:* ${nome}%0A`;
+  texto += `*Endereço:* ${endereco}%0A`;
+  texto += `*Bairro:* ${bairro}%0A`;
+  texto += `*Pagamento:* ${pag}%0A`;
+  texto += `----------------------------%0A`;
+  texto += `*PEDIDO:*%0A`;
+  
+  carrinho.forEach(p => {
+    texto += `• ${p.nome} - R$ ${p.preco.toFixed(2)}%0A`;
+  });
+
+  texto += `----------------------------%0A`;
+  texto += `*TOTAL: R$ ${calcularTotal().toFixed(2)}*`;
+
+  window.open(`https://wa.me/5561998791411?text=${texto}`);
 }
 
+// Inicialização
 preencherMeia();
 render("todas");
+
+// 🕒 Comando para remover o Splash Screen após 2.5 segundos com animação
+window.onload = () => {
+  setTimeout(() => {
+    const splash = document.getElementById('splash');
+    splash.classList.add('hidden');
+  }, 2500);
+};
 
 </script>
 
