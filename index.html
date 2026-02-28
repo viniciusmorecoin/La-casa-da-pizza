@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Casa da Pizza</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#8B0000">
+
+</head>
+<body>
+
+<div id="splash">
+  <img src="logo.png">
+</div>
+
+<header class="header">
+<img src="logo.png">
+<h1>La Casa da Pizza</h1>
+</header>
+
+<div class="banner">
+🔥 Entrega rápida • 40-60 min
+</div>
+
+<div class="categories">
+<button class="cat-btn active" onclick="filtrar(event,'todas')">Todas</button>
+<button class="cat-btn" onclick="filtrar(event,'salgada')">Salgadas</button>
+<button class="cat-btn" onclick="filtrar(event,'doce')">Doces</button>
+</div>
+
+<div class="meia-box">
+<h2>🍕 Pizza Meia a Meia</h2>
+
+<select id="sabor1"></select>
+<select id="sabor2"></select>
+
+<select id="borda">
+<option value="0">Sem borda</option>
+<option value="8">Catupiry + R$ 8</option>
+<option value="8">Cheddar + R$ 8</option>
+<option value="10">Chocolate + R$ 10</option>
+</select>
+
+<button class="add-btn" onclick="addMeia()">Adicionar Meia a Meia</button>
+</div>
+
+<div class="grid" id="lista"></div>
+
+<div class="cart-btn" onclick="abrirCarrinho()">
+🛒 Carrinho <span id="contador">0</span>
+</div>
+
+<div class="modal" id="modal">
+<div class="modal-content">
+<h2>Seu Pedido</h2>
+<div id="itens"></div>
+
+<h3>Cupom de Desconto</h3>
+<input id="cupomInput" placeholder="Digite seu cupom">
+<button class="add-btn" onclick="aplicarCupom()">Aplicar Cupom</button>
+<div id="cupomMsg" style="margin-top:8px;font-size:14px;"></div>
+
+<input id="nome" placeholder="Seu nome">
+<input id="endereco" placeholder="Rua e número">
+<input id="bairro" placeholder="Bairro">
+
+<select id="pagamento">
+<option>Pix</option>
+<option>Dinheiro</option>
+<option>Cartão</option>
+</select>
+
+<button class="add-btn" onclick="finalizar()">Finalizar Pedido</button>
+<button onclick="fecharCarrinho()">Fechar</button>
+</div>
+</div>
+
+<script>
+
+// ARRAY COMPLETO
+let sabores=[
+
+{nome:"O Professor",cat:"salgada",preco:49.90,img:"img/professor.jpg",desc:"Molho de tomate, mussarela, carne moída, bacon e barbecue."},
+{nome:"Lisboa",cat:"salgada",preco:49.90,img:"img/lisboa.jpg",desc:"Molho de tomate, mussarela, bacon e abacaxi."},
+{nome:"Berlim",cat:"salgada",preco:49.90,img:"img/berlim.jpg",desc:"Molho de tomate, mussarela, pepperoni e orégano."},
+{nome:"Tóquio",cat:"salgada",preco:49.90,img:"img/toquio.jpg",desc:"Molho de tomate, mussarela, atum, cebola, tomate, azeitona e orégano."},
+{nome:"Rio",cat:"salgada",preco:49.90,img:"img/rio.jpg",desc:"Molho de tomate, mussarela, calabresa, cebola e orégano."},
+{nome:"Nairóbi",cat:"salgada",preco:49.90,img:"img/nairobi.jpg",desc:"Molho de tomate, mussarela, frango, catupiry e orégano."},
+{nome:"Palermo",cat:"salgada",preco:49.90,img:"img/palermo.jpg",desc:"Molho de tomate, mussarela, tomate, manjericão e orégano."},
+{nome:"Marselha",cat:"salgada",preco:49.90,img:"img/marselha.jpg",desc:"Molho de tomate, mussarela, cogumelo, presunto e orégano."},
+{nome:"Denver",cat:"salgada",preco:49.90,img:"img/denver.jpg",desc:"Molho de tomate, mussarela, calabresa, pimenta calabresa e orégano."},
+{nome:"Oslo",cat:"salgada",preco:49.90,img:"img/oslo.jpg",desc:"Molho de tomate, mussarela, carne seca, cebola, catupiry e orégano."},
+{nome:"Estocolmo",cat:"salgada",preco:49.90,img:"img/estocolmo.jpg",desc:"Molho de tomate, mussarela, presunto, tomate, azeitona e orégano."},
+{nome:"Moscou",cat:"salgada",preco:49.90,img:"img/moscou.jpg",desc:"Molho de tomate, mussarela, queijo prato, cheddar, catupiry e orégano."},
+{nome:"Bogotá",cat:"salgada",preco:49.90,img:"img/bogota.jpg",desc:"Molho de tomate, mussarela, carne moída, milho e orégano."},
+
+{nome:"Confete",cat:"doce",preco:39.90,img:"img/confete.jpg",desc:"Chocolate ao leite com confetes coloridos."},
+{nome:"Banana Nevada",cat:"doce",preco:39.90,img:"img/banana.jpg",desc:"Banana, chocolate branco e leite em pó."},
+{nome:"Romeo e Julieta",cat:"doce",preco:39.90,img:"img/romeo.jpg",desc:"Mussarela e goiabada."},
+{nome:"Chocolate",cat:"doce",preco:39.90,img:"img/chocolate.jpg",desc:"Chocolate ao leite."},
+{nome:"Prestígio",cat:"doce",preco:39.90,img:"img/prestigio.jpg",desc:"Chocolate ao leite com coco."}
+
+];
+
+let carrinho=[];
+
+// Carregar carrinho salvo
+let carrinhoSalvo = localStorage.getItem("carrinho");
+if(carrinhoSalvo){
+  carrinho = JSON.parse(carrinhoSalvo);
+  atualizarContador();
+}
+
+let desconto=0;
+let cupomAplicado=null;
+
+const cupons={
+"PIZZA10":{tipo:"percentual",valor:10},
+"CASA20":{tipo:"percentual",valor:20},
+"PROMO5":{tipo:"fixo",valor:5}
+};
+
+function preencherMeia(){
+let options="";
+sabores.forEach((s,i)=>{
+options+=`<option value="${i}">${s.nome} - R$ ${s.preco.toFixed(2)}</option>`;
+});
+sabor1.innerHTML=options;
+sabor2.innerHTML=options;
+}
+
+function render(cat){
+let html="";
+sabores.filter(s=>cat==="todas"||s.cat===cat).forEach((s,i)=>{
+html+=`
+<div class="card">
+<img src="${s.img}">
+<div class="card-content">
+<h3>${s.nome}</h3>
+<div class="desc">${s.desc}</div>
+<div class="price">R$ ${s.preco.toFixed(2)}</div>
+<button class="add-btn" onclick="add(${i})">Adicionar</button>
+</div>
+</div>`;
+});
+lista.innerHTML=html;
+}
+
+function filtrar(e,cat){
+document.querySelectorAll(".cat-btn").forEach(b=>b.classList.remove("active"));
+e.target.classList.add("active");
+render(cat);
+}
+
+function add(i){
+carrinho.push(sabores[i]);
+animar();
+atualizarContador();
+localStorage.setItem("carrinho", JSON.stringify(carrinho));
+}
+
+function addMeia(){
+let i1=sabor1.value;
+let i2=sabor2.value;
+let borda=parseFloat(document.getElementById("borda").value);
+if(i1===i2)return alert("Escolha sabores diferentes!");
+let s1=sabores[i1];
+let s2=sabores[i2];
+let preco=Math.max(s1.preco,s2.preco)+borda;
+carrinho.push({nome:"Meia a Meia: "+s1.nome+" / "+s2.nome,preco:preco});
+animar();
+atualizarContador();
+localStorage.setItem("carrinho", JSON.stringify(carrinho));
+}
+
+function atualizarContador(){
+contador.innerText=carrinho.length;
+}
+
+function animar(){
+let btn=document.querySelector(".cart-btn");
+btn.classList.add("pulse");
+setTimeout(()=>btn.classList.remove("pulse"),400);
+}
+
+function abrirCarrinho(){
+
+let html="";
+let total=calcularTotal();
+let bairro = document.getElementById("bairro")?.value?.toLowerCase() || "";
+let taxa = 0;
+
+if(bairro.includes("centro")) taxa = 5;
+if(bairro.includes("jardim")) taxa = 8;
+
+carrinho.forEach((p,i)=>{
+html+=`${p.nome} - R$ ${p.preco.toFixed(2)} 
+<button class="remover" onclick="remover(${i})">X</button><br><br>`;
+});
+
+if(desconto>0){
+html+=`<div style="color:green;">Desconto: - R$ ${desconto.toFixed(2)}</div>`;
+total -= desconto;
+}
+
+if(taxa>0){
+html+=`<div>Taxa de entrega: R$ ${taxa.toFixed(2)}</div>`;
+total += taxa;
+}
+
+html+=`<strong>Total: R$ ${total.toFixed(2)}</strong>`;
+
+itens.innerHTML=html;
+modal.style.display="flex";
+}
+
+function remover(i){
+carrinho.splice(i,1);
+atualizarContador();
+abrirCarrinho();
+localStorage.setItem("carrinho", JSON.stringify(carrinho));
+}
+
+function fecharCarrinho(){
+modal.style.display="none";
+}
+
+function finalizar(){
+let msg="🍕 Novo Pedido%0A%0A";
+carrinho.forEach(p=>{
+msg+=p.nome+" - R$ "+p.preco.toFixed(2)+"%0A";
+});
+window.open("https://wa.me/5561998791411?text="+msg);
+localStorage.removeItem("carrinho");
+}
+
+function aplicarCupom(){
+
+let codigo=document.getElementById("cupomInput").value.toUpperCase();
+
+if(cupomAplicado){
+document.getElementById("cupomMsg").innerHTML="❌ Cupom já aplicado.";
+return;
+}
+
+if(!cupons[codigo]){
+document.getElementById("cupomMsg").innerHTML="❌ Cupom inválido.";
+return;
+}
+
+let total=calcularTotal();
+
+if(cupons[codigo].tipo==="percentual"){
+desconto=total*(cupons[codigo].valor/100);
+}else{
+desconto=cupons[codigo].valor;
+}
+
+cupomAplicado=codigo;
+
+document.getElementById("cupomMsg").innerHTML="✅ Cupom aplicado!";
+abrirCarrinho();
+}
+
+preencherMeia();
+render("todas");
+
+if("serviceWorker" in navigator){
+navigator.serviceWorker.register("service-worker.js");
+}
+
+window.addEventListener("load", ()=>{
+setTimeout(()=>{
+document.getElementById("splash").style.display="none";
+},1500);
+});
+
+if(!localStorage.getItem("instalado")){
+  desconto = calcularTotal()*0.10;
+  cupomAplicado = "APP10";
+  localStorage.setItem("instalado", true);
+}
+
+function admin(){
+let senha = prompt("Digite a senha:");
+if(senha==="1234"){
+alert("Total de pedidos hoje: "+carrinho.length);
+}else{
+alert("Senha incorreta");
+}
+}
+
+</script>
+
+</body>
+<button onclick="admin()" style="position:fixed;top:10px;right:10px;opacity:0.2;">⚙</button>
+</html>
