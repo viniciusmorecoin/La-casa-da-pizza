@@ -4,75 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Casa da Pizza | O Plano Perfeito</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#8B0000">
-
     <style>
-        :root {
-            --primary: #8B0000;
-            --primary-dark: #660000;
-            --accent: #ff3c00;
-            --success: #25D366;
-            --gold: #FFD700;
-            --bg: #f8f8f8;
-            --text: #333;
-        }
-
-        body {
-            margin: 0; font-family: -apple-system, system-ui, sans-serif;
-            background-color: var(--bg); color: var(--text); padding-bottom: 100px;
-            background-image: radial-gradient(#ddd 0.5px, transparent 0.5px); background-size: 20px 20px;
-        }
-
-        /* Splash Screen */
-        #splash {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--primary); display: flex; justify-content: center; align-items: center;
-            z-index: 9999; transition: opacity 0.5s;
-        }
+        :root { --primary: #8B0000; --accent: #ff3c00; --success: #25D366; --gold: #FFD700; --bg: #f8f8f8; --text: #333; }
+        body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background-color: var(--bg); color: var(--text); padding-bottom: 100px; }
+        #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--primary); display: flex; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.5s; }
         #splash.hidden { opacity: 0; visibility: hidden; }
-        #splash img { width: 150px; animation: fadeIn 1s; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-
-        /* Header & Banner */
-        .header { background: #000; color: white; display: flex; align-items: center; padding: 15px; gap: 15px; }
-        .header img { width: 70px; height: 70px; border-radius: 12px; border: 2px solid var(--primary); }
-        
-        .banner { background: linear-gradient(90deg, var(--primary), var(--accent)); color: white; padding: 10px; text-align: center; font-weight: bold; font-size: 13px; }
-
-        /* Categorias */
-        .categories { display: flex; gap: 10px; padding: 15px; background: white; overflow-x: auto; position: sticky; top: 0; z-index: 100; scrollbar-width: none; }
-        .categories::-webkit-scrollbar { display: none; }
-        .cat-btn { padding: 8px 20px; border-radius: 25px; border: 1px solid #ddd; background: white; cursor: pointer; white-space: nowrap; }
+        #splash img { width: 120px; }
+        .header { background: #000; color: white; display: flex; align-items: center; padding: 12px; gap: 12px; }
+        .header img { width: 60px; border-radius: 8px; border: 2px solid var(--primary); }
+        .banner { background: linear-gradient(90deg, var(--primary), var(--accent)); color: white; padding: 8px; text-align: center; font-weight: bold; font-size: 12px; }
+        .categories { display: flex; gap: 10px; padding: 15px; background: white; overflow-x: auto; position: sticky; top: 0; z-index: 100; }
+        .cat-btn { padding: 8px 18px; border-radius: 20px; border: 1px solid #ddd; background: white; cursor: pointer; white-space: nowrap; }
         .cat-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
-
-        /* Grid e Cards */
-        .grid { display: grid; grid-template-columns: 1fr; gap: 20px; padding: 15px; }
-        .card { background: white; border-radius: 18px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .card img { width: 100%; height: 180px; object-fit: cover; }
-        .card-content { padding: 15px; }
-        .price { color: var(--primary); font-weight: 800; font-size: 20px; margin: 10px 0; display: block; }
-
-        /* Botões */
-        .add-btn { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 12px; width: 100%; font-weight: bold; cursor: pointer; }
+        .grid { display: grid; grid-template-columns: 1fr; gap: 15px; padding: 15px; }
+        .card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .card img { width: 100%; height: 160px; object-fit: cover; }
+        .card-content { padding: 12px; }
+        .price { color: var(--primary); font-weight: 800; font-size: 18px; margin: 8px 0; display: block; }
+        .add-btn { background: var(--primary); color: white; border: none; padding: 10px; border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer; }
         .btn-combo { background: var(--gold) !important; color: black !important; }
-
-        /* Meia a Meia Box */
-        .meia-box { background: white; margin: 15px; padding: 20px; border-radius: 18px; border: 2px dashed var(--primary); }
-        .meia-box select { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px; border: 1px solid #ddd; }
-
-        /* Carrinho e Modais */
-        .cart-btn { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: var(--success); color: white; padding: 16px; border-radius: 50px; font-weight: bold; text-align: center; z-index: 999; box-shadow: 0 10px 25px rgba(0,0,0,0.2); cursor: pointer; }
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(5px); }
-        .modal-content { background: white; width: 90%; max-width: 450px; padding: 25px; border-radius: 20px; max-height: 85vh; overflow-y: auto; }
-        .modal-content input, .modal-content select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-size: 16px; }
-
-        .combo-item-box { background: #f9f9f9; padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 4px solid var(--gold); }
-
-        @keyframes bounce { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.05); } }
-        .cart-bounce { animation: bounce 0.4s ease; }
-
+        .meia-box { background: white; margin: 15px; padding: 15px; border-radius: 15px; border: 2px dashed var(--primary); }
+        .meia-box select, .modal-content select, .modal-content input { width: 100%; padding: 10px; margin-bottom: 8px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; }
+        .cart-btn { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: var(--success); color: white; padding: 15px; border-radius: 40px; font-weight: bold; text-align: center; z-index: 999; cursor: pointer; }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(4px); }
+        .modal-content { background: white; width: 90%; max-width: 400px; padding: 20px; border-radius: 15px; max-height: 80vh; overflow-y: auto; }
+        .combo-item-box { background: #f4f4f4; padding: 10px; border-radius: 10px; margin-bottom: 8px; border-left: 4px solid var(--gold); }
         @media(min-width:768px){ .grid{grid-template-columns: 1fr 1fr} }
     </style>
 </head>
@@ -82,62 +38,59 @@
 
 <header class="header">
     <img src="logo.png">
-    <h1>La Casa da Pizza</h1>
+    <h1 style="margin:0; font-size:20px;">La Casa da Pizza</h1>
 </header>
 
-<div class="banner">📍 Atendendo Areal, Águas Claras, Taguatinga e Região</div>
+<div class="banner">🚀 Areal • Águas Claras • Taguatinga • Riacho Fundo I • Samambaia</div>
 
 <div class="categories">
     <button class="cat-btn active" onclick="filtrar(event,'todas')">Todas</button>
     <button class="cat-btn" onclick="filtrar(event,'salgada')">Salgadas</button>
     <button class="cat-btn" onclick="filtrar(event,'doce')">Doces</button>
-    <button class="cat-btn" onclick="filtrar(event,'combo')" style="color: #b8860b; font-weight: bold;">💰 Combos</button>
+    <button class="cat-btn" onclick="filtrar(event,'combo')" style="border-color:var(--gold); color:#b8860b;">💰 Combos</button>
 </div>
 
 <div class="meia-box" id="secao-meia">
-    <h2 style="margin-top:0; font-size:18px;">🍕 Pizza Meia a Meia</h2>
+    <h2 style="margin-top:0; font-size:16px;">🍕 Pizza Meia a Meia (Qualquer Sabor)</h2>
     <select id="sabor1"></select>
     <select id="sabor2"></select>
     <select id="borda">
         <option value="0">Sem borda</option>
-        <option value="8">Borda Catupiry + R$ 8</option>
-        <option value="8">Borda Cheddar + R$ 8</option>
-        <option value="10">Borda Chocolate + R$ 10</option>
+        <option value="8">Borda Catupiry (+ R$ 8)</option>
+        <option value="8">Borda Cheddar (+ R$ 8)</option>
+        <option value="10">Borda Chocolate (+ R$ 10)</option>
     </select>
-    <button class="add-btn" onclick="addMeia()">Adicionar ao Carrinho</button>
+    <button class="add-btn" onclick="addMeia()">Adicionar ao Plano</button>
 </div>
 
 <div class="grid" id="lista"></div>
 
-<div class="cart-btn" id="cartBtn" onclick="abrirCarrinho()">
-    🛒 Ver Carrinho (<span id="contador">0</span>)
-</div>
+<div class="cart-btn" onclick="abrirCarrinho()">🛒 Ver Carrinho (<span id="contador">0</span>)</div>
 
 <div class="modal" id="modal-combo">
     <div class="modal-content">
-        <h2 id="combo-titulo" style="color: var(--primary); margin-top:0;">Personalizar Combo</h2>
+        <h2 id="combo-titulo" style="color:var(--primary); margin:0 0 10px 0; font-size:18px;">Personalizar Combo</h2>
         <div id="combo-opcoes"></div>
-        <label>🥤 Escolha o Refrigerante:</label>
+        <label style="font-size:13px; font-weight:bold;">🥤 Escolha o Refrigerante (1.5L):</label>
         <select id="combo-refri">
-            <option>Coca-Cola 1.5L</option>
-            <option>Guaraná Antarctica 1.5L</option>
+            <option>Coca-Cola</option>
+            <option>Guaraná Antarctica</option>
         </select>
-        <button class="add-btn" onclick="confirmarCombo()" style="background: var(--success); margin-top: 15px;">Confirmar Combo</button>
+        <button class="add-btn" onclick="confirmarCombo()" style="background:var(--success); margin-top:10px;">Confirmar Plano</button>
         <button onclick="fecharModalCombo()" style="background:none; border:none; color:#999; width:100%; margin-top:10px;">Cancelar</button>
     </div>
 </div>
 
 <div class="modal" id="modal">
     <div class="modal-content">
-        <h2>Seu Pedido</h2>
+        <h2 style="margin-top:0;">Carrinho</h2>
         <div id="itens"></div>
-        <div id="total-display" style="text-align:right; margin: 15px 0;"></div>
-        <hr>
-        <input id="nome" placeholder="Seu nome">
+        <div id="total-display" style="text-align:right; margin: 15px 0; font-weight:bold;"></div>
+        <input id="nome" placeholder="Seu Nome">
         <input id="endereco" placeholder="Endereço e Número">
         <select id="bairro" onchange="atualizarTotalModal()">
             <option value="" disabled selected>Selecione seu Bairro (Taxa)</option>
-            <option value="0">Retirada no Local (Grátis)</option>
+            <option value="0">Retirada (Grátis)</option>
             <option value="5">Areal - R$ 5,00</option>
             <option value="7">Arniqueiras - R$ 7,00</option>
             <option value="10">Águas Claras - R$ 10,00</option>
@@ -149,36 +102,43 @@
         </select>
         <select id="pagamento">
             <option disabled selected>Forma de Pagamento</option>
-            <option>Pix</option>
-            <option>Dinheiro</option>
-            <option>Cartão</option>
+            <option>Pix</option><option>Dinheiro</option><option>Cartão</option>
         </select>
-        <button class="add-btn" onclick="finalizar()" style="background: var(--success);">Finalizar no WhatsApp</button>
-        <button onclick="fecharCarrinho()" style="background:none; border:none; color:#999; width:100%; margin-top:10px;">Fechar</button>
+        <button class="add-btn" onclick="finalizar()" style="background:var(--success);">Enviar p/ WhatsApp</button>
+        <button onclick="fecharCarrinho()" style="background:none; border:none; color:#999; width:100%; margin-top:10px;">Voltar</button>
     </div>
 </div>
 
 <script>
 const sabores = [
-    {nome:"Pizza do Professor",cat:"salgada",preco:49.90,img:"professor.jpg",desc:"Mussarela, carne moída, bacon e barbecue."},
-    {nome:"Pizza da Lisboa",cat:"salgada",preco:49.90,img:"lisboa.jpg",desc:"Mussarela, bacon crocante e abacaxi."},
-    {nome:"Pizza do Berlim",cat:"salgada",preco:49.90,img:"berlim.jpg",desc:"Mussarela e pepperoni fatiado."},
-    {nome:"Pizza da Tóquio",cat:"salgada",preco:49.90,img:"toquio.jpg",desc:"Mussarela, atum, cebola e tomate."},
-    {nome:"Pizza do Rio",cat:"salgada",preco:49.90,img:"rio.jpg",desc:"Mussarela, calabresa fatiada e cebola."},
-    {nome:"Pizza da Nairóbi",cat:"salgada",preco:49.90,img:"nairobi.jpg",desc:"Mussarela, frango desfiado e catupiry."},
-    {nome:"Pizza de Confete",cat:"doce",preco:39.90,img:"confete.jpg",desc:"Chocolate ao leite com confetes coloridos."},
-    {nome:"Pizza de Banana Nevada",cat:"doce",preco:39.90,img:"banana.jpg",desc:"Banana, chocolate branco e leite em pó."},
-    {nome:"Pizza de Chocolate",cat:"doce",preco:39.90,img:"chocolate.jpg",desc:"Chocolate ao leite cremoso."},
+    {nome:"Pizza do Professor",cat:"salgada",preco:49.90,desc:"Mussarela, carne moída, bacon e barbecue."},
+    {nome:"Pizza da Lisboa",cat:"salgada",preco:49.90,desc:"Mussarela, bacon crocante e abacaxi."},
+    {nome:"Pizza do Berlim",cat:"salgada",preco:49.90,desc:"Mussarela e pepperoni fatiado."},
+    {nome:"Pizza da Tóquio",cat:"salgada",preco:49.90,desc:"Mussarela, atum, cebola e tomate."},
+    {nome:"Pizza do Rio",cat:"salgada",preco:49.90,desc:"Mussarela, calabresa fatiada e cebola."},
+    {nome:"Pizza da Nairóbi",cat:"salgada",preco:49.90,desc:"Mussarela, frango desfiado e catupiry."},
+    {nome:"Pizza do Palermo",cat:"salgada",preco:49.90,desc:"Mussarela, tomate, manjericão e orégano."},
+    {nome:"Pizza do Marselha",cat:"salgada",preco:49.90,desc:"Mussarela, cogumelos e presunto."},
+    {nome:"Pizza do Denver",cat:"salgada",preco:49.90,desc:"Mussarela, calabresa e pimenta."},
+    {nome:"Pizza do Oslo",cat:"salgada",preco:49.90,desc:"Mussarela, carne seca e catupiry."},
+    {nome:"Pizza da Estocolmo",cat:"salgada",preco:49.90,desc:"Mussarela, presunto, tomate e azeitona."},
+    {nome:"Pizza do Moscou",cat:"salgada",preco:49.90,desc:"Queijo prato, cheddar, catupiry e mussarela."},
+    {nome:"Pizza do Bogotá",cat:"salgada",preco:49.90,desc:"Mussarela, carne moída, milho e orégano."},
+    {nome:"Pizza de Confete",cat:"doce",preco:39.90,desc:"Chocolate ao leite com confetes."},
+    {nome:"Pizza de Banana Nevada",cat:"doce",preco:39.90,desc:"Banana, chocolate branco e leite em pó."},
+    {nome:"Pizza de Romeo e Julieta",cat:"doce",preco:39.90,desc:"Mussarela com goiabada cascão."},
+    {nome:"Pizza de Chocolate",cat:"doce",preco:39.90,desc:"Chocolate ao leite cremoso."},
+    {nome:"Pizza de Prestígio",cat:"doce",preco:39.90,desc:"Chocolate ao leite com coco ralado."},
     // Combos
-    {nome:"Combo O Professor", cat:"combo", preco:64.90, img:"combo-prof.jpg", desc:"1 Salgada (até 2 sabores) + Refri 1.5L"},
-    {nome:"Combo Plano Bella Ciao", cat:"combo", preco:99.90, img:"combo-bella.jpg", desc:"2 Salgadas + 1 Doce Grande + Refri 1.5L"},
-    {nome:"Combo Dalí", cat:"combo", preco:75.00, img:"combo-dali.jpg", desc:"1 Salgada + 1 Doce Grande + Refri 1.5L"}
+    {nome:"Combo O Professor", cat:"combo", preco:64.90, desc:"1 Salgada (até 2 sabores) + Refri 1.5L"},
+    {nome:"Combo Plano Bella Ciao", cat:"combo", preco:99.90, desc:"2 Salgadas + 1 Doce Grande + Refri 1.5L"},
+    {nome:"Combo Dalí", cat:"combo", preco:75.00, desc:"1 Salgada + 1 Doce Grande + Refri 1.5L"}
 ];
 
 const configCombos = {
-    "Combo O Professor": { pizzas: [{tipo:"salgada"}] },
-    "Combo Plano Bella Ciao": { pizzas: [{tipo:"salgada"}, {tipo:"salgada"}, {tipo:"doce"}] },
-    "Combo Dalí": { pizzas: [{tipo:"salgada"}, {tipo:"doce"}] }
+    "Combo O Professor": [{t:"salgada"}],
+    "Combo Plano Bella Ciao": [{t:"salgada"}, {t:"salgada"}, {t:"doce"}],
+    "Combo Dalí": [{t:"salgada"}, {t:"doce"}]
 };
 
 let carrinho = [];
@@ -186,155 +146,88 @@ let comboEmEdicao = null;
 
 function render(cat){
     const lista = document.getElementById("lista");
-    let html = "";
-    sabores.filter(s => cat === "todas" || s.cat === cat).forEach((s, i) => {
-        let indexReal = sabores.findIndex(p => p.nome === s.nome);
-        let botao = s.cat === 'combo' ? 
-            `<button class="add-btn btn-combo" onclick="abrirCombo('${s.nome}')">Personalizar Combo</button>` :
-            `<button class="add-btn" onclick="add(${indexReal}, event)">Adicionar</button>`;
-        
-        html += `
+    lista.innerHTML = sabores.filter(s => cat === 'todas' || s.cat === cat).map(s => `
         <div class="card">
-            <img src="${s.img}" onerror="this.src='https://via.placeholder.com/400x200?text=Pizza'">
             <div class="card-content">
-                <h3>${s.nome}</h3>
-                <div style="font-size:13px; color:#666; height:35px">${s.desc}</div>
+                <h3 style="margin:0;">${s.nome}</h3>
+                <small style="color:#666;">${s.desc}</small>
                 <span class="price">R$ ${s.preco.toFixed(2)}</span>
-                ${botao}
+                ${s.cat === 'combo' ? `<button class="add-btn btn-combo" onclick="abrirCombo('${s.nome}')">Configurar Combo</button>` : `<button class="add-btn" onclick="add('${s.nome}')">Adicionar</button>`}
             </div>
-        </div>`;
-    });
-    lista.innerHTML = html;
-    document.getElementById("secao-meia").style.display = (cat === 'salgada' || cat === 'todas') ? 'block' : 'none';
+        </div>`).join("");
 }
 
-function abrirCombo(nomeCombo){
-    comboEmEdicao = sabores.find(s => s.nome === nomeCombo);
-    const config = configCombos[nomeCombo];
-    document.getElementById("combo-titulo").innerText = nomeCombo;
-    const opcoes = document.getElementById("combo-opcoes");
-    opcoes.innerHTML = "";
-
-    config.pizzas.forEach((p, idx) => {
-        opcoes.innerHTML += `
-            <div class="combo-item-box">
-                <strong>Pizza ${idx+1} (${p.tipo}):</strong>
-                <select class="c-s1">${gerarOptions(p.tipo)}</select>
-                <select class="c-s2"><option value="">(Opcional Meia a Meia)</option>${gerarOptions(p.tipo)}</select>
-            </div>`;
-    });
+function abrirCombo(nome){
+    comboEmEdicao = sabores.find(s => s.nome === nome);
+    const config = configCombos[nome];
+    document.getElementById("combo-titulo").innerText = nome;
+    document.getElementById("combo-opcoes").innerHTML = config.map((p, i) => `
+        <div class="combo-item-box">
+            <strong>Pizza ${i+1} (${p.t}):</strong>
+            <select class="c-s1">${sabores.filter(s => s.cat === p.t).map(s => `<option value="${s.nome}">${s.nome}</option>`).join("")}</select>
+            <select class="c-s2"><option value="">(Meia Opcional)</option>${sabores.filter(s => s.cat === p.t).map(s => `<option value="${s.nome}">${s.nome}</option>`).join("")}</select>
+        </div>`).join("");
     document.getElementById("modal-combo").style.display = "flex";
 }
 
-function gerarOptions(tipo){
-    return sabores.filter(s => s.cat === tipo).map(s => `<option value="${s.nome}">${s.nome}</option>`).join("");
-}
-
 function confirmarCombo(){
-    const s1 = document.querySelectorAll(".c-s1");
-    const s2 = document.querySelectorAll(".c-s2");
+    const s1 = document.querySelectorAll(".c-s1"), s2 = document.querySelectorAll(".c-s2");
     const refri = document.getElementById("combo-refri").value;
-    let detalhes = [];
-
-    s1.forEach((sel, i) => {
-        let txt = sel.value;
-        if(s2[i].value) txt = `Meia ${sel.value} / Meia ${s2[i].value}`;
-        detalhes.push(`P${i+1}: ${txt}`);
-    });
-
-    carrinho.push({
-        nome: `${comboEmEdicao.nome} (${refri})`,
-        preco: comboEmEdicao.preco,
-        obs: detalhes.join(" | ")
-    });
-    
-    fecharModalCombo();
-    atualizarContador();
+    let desc = Array.from(s1).map((s, i) => `P${i+1}: ${s2[i].value ? 'Meia '+s.value+' / Meia '+s2[i].value : s.value}`).join(" | ");
+    carrinho.push({ nome: `${comboEmEdicao.nome} (${refri})`, preco: comboEmEdicao.preco, obs: desc });
+    fecharModalCombo(); atualizarContador();
 }
 
-function add(i, event){
-    carrinho.push(sabores[i]);
-    event.target.innerText = "✅ Adicionado";
-    setTimeout(() => { event.target.innerText = "Adicionar"; }, 1000);
+function add(nome){
+    carrinho.push(sabores.find(s => s.nome === nome));
     atualizarContador();
 }
 
 function addMeia(){
-    const s1 = sabores[document.getElementById("sabor1").value];
-    const s2 = sabores[document.getElementById("sabor2").value];
-    const borda = parseFloat(document.getElementById("borda").value);
-    if(!s1 || !s2) return alert("Selecione os sabores!");
-    
-    carrinho.push({
-        nome: `Meia ${s1.nome.replace('Pizza do ','')} / ${s2.nome.replace('Pizza do ','')}`,
-        preco: Math.max(s1.preco, s2.preco) + borda
-    });
+    const s1 = sabores[document.getElementById("sabor1").value], s2 = sabores[document.getElementById("sabor2").value], borda = parseFloat(document.getElementById("borda").value);
+    if(!s1 || !s2) return alert("Escolha os sabores!");
+    carrinho.push({ nome: `Meia ${s1.nome.replace('Pizza do ','')} / ${s2.nome.replace('Pizza do ','')}`, preco: Math.max(s1.preco, s2.preco) + borda });
     atualizarContador();
-    alert("Adicionado!");
 }
 
-function atualizarContador(){
-    document.getElementById("contador").innerText = carrinho.length;
-    const btn = document.getElementById("cartBtn");
-    btn.classList.add("cart-bounce");
-    setTimeout(() => btn.classList.remove("cart-bounce"), 400);
-}
-
-function atualizarTotalModal(){
-    const taxa = parseFloat(document.getElementById("bairro").value) || 0;
-    const sub = carrinho.reduce((a, b) => a + b.preco, 0);
-    document.getElementById("total-display").innerHTML = `
-        Subtotal: R$ ${sub.toFixed(2)}<br>
-        Entrega: R$ ${taxa.toFixed(2)}<br>
-        <strong style="font-size:20px; color:var(--success)">Total: R$ ${(sub+taxa).toFixed(2)}</strong>`;
-}
+function atualizarContador(){ document.getElementById("contador").innerText = carrinho.length; }
+function fecharModalCombo(){ document.getElementById("modal-combo").style.display = "none"; }
+function fecharCarrinho(){ document.getElementById("modal").style.display = "none"; }
+function filtrar(e, cat){ document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active")); e.target.classList.add("active"); render(cat); }
 
 function abrirCarrinho(){
-    const itensDiv = document.getElementById("itens");
-    itensDiv.innerHTML = carrinho.length ? carrinho.map((p, i) => `
-        <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:14px; border-bottom:1px solid #eee; padding-bottom:5px;">
-            <div><b>${p.nome}</b>${p.obs ? '<br><small>'+p.obs+'</small>' : ''}</div>
+    document.getElementById("itens").innerHTML = carrinho.map((p, i) => `
+        <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:13px; border-bottom:1px solid #eee;">
+            <div><b>${p.nome}</b><br><small>${p.obs || ''}</small></div>
             <div>R$ ${p.preco.toFixed(2)} <button onclick="remover(${i})" style="color:red; border:none; background:none;">X</button></div>
-        </div>`).join("") : "Carrinho vazio.";
+        </div>`).join("");
     atualizarTotalModal();
     document.getElementById("modal").style.display = "flex";
 }
 
 function remover(i){ carrinho.splice(i,1); abrirCarrinho(); atualizarContador(); }
-function filtrar(e, cat){ 
-    document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
-    e.target.classList.add("active");
-    render(cat); 
+
+function atualizarTotalModal(){
+    const taxa = parseFloat(document.getElementById("bairro").value) || 0;
+    const sub = carrinho.reduce((a, b) => a + b.preco, 0);
+    document.getElementById("total-display").innerHTML = `Subtotal: R$ ${sub.toFixed(2)} | Entrega: R$ ${taxa.toFixed(2)} | Total: R$ ${(sub+taxa).toFixed(2)}`;
 }
-function fecharCarrinho(){ document.getElementById("modal").style.display = "none"; }
-function fecharModalCombo(){ document.getElementById("modal-combo").style.display = "none"; }
 
 function finalizar(){
-    const nome = document.getElementById("nome").value;
-    const end = document.getElementById("endereco").value;
-    const bairroSel = document.getElementById("bairro");
-    if(!nome || !end || !bairroSel.value) return alert("Preencha tudo!");
-
-    const taxa = parseFloat(bairroSel.value);
-    const sub = carrinho.reduce((a, b) => a + b.preco, 0);
-    
-    let msg = `*NOVO PEDIDO - LA CASA DA PIZZA*%0A%0A`;
-    msg += `*Cliente:* ${nome}%0A*End:* ${end}%0A*Bairro:* ${bairroSel.options[bairroSel.selectedIndex].text}%0A%0A*PEDIDO:*%0A`;
-    carrinho.forEach(p => {
-        msg += `• ${p.nome} - R$ ${p.preco.toFixed(2)}%0A`;
-        if(p.obs) msg += `  _${p.obs}_%0A`;
-    });
-    msg += `%0A*Subtotal:* R$ ${sub.toFixed(2)}%0A*Entrega:* R$ ${taxa.toFixed(2)}%0A*TOTAL: R$ ${(sub+taxa).toFixed(2)}*`;
-    
+    const n = document.getElementById("nome").value, e = document.getElementById("endereco").value, b = document.getElementById("bairro");
+    if(!n || !e || !b.value) return alert("Preencha tudo!");
+    const taxa = parseFloat(b.value), sub = carrinho.reduce((a, b) => a + b.preco, 0);
+    let msg = `*NOVO PEDIDO - LA CASA DA PIZZA*%0A%0A*Cliente:* ${n}%0A*End:* ${e}%0A*Bairro:* ${b.options[b.selectedIndex].text}%0A%0A*ITENS:*%0A`;
+    carrinho.forEach(p => msg += `• ${p.nome} - R$ ${p.preco.toFixed(2)}%0A  ${p.obs || ''}%0A`);
+    msg += `%0A*TOTAL: R$ ${(sub+taxa).toFixed(2)}*`;
     window.open(`https://wa.me/5561998791411?text=${msg}`);
 }
 
 window.onload = () => {
-    let opts = sabores.filter(s => s.cat === 'salgada').map((s, i) => `<option value="${sabores.indexOf(s)}">${s.nome}</option>`).join("");
-    document.getElementById("sabor1").innerHTML = opts;
-    document.getElementById("sabor2").innerHTML = opts;
+    let opts = sabores.filter(s => s.cat !== 'combo').map((s, i) => `<option value="${sabores.indexOf(s)}">${s.nome}</option>`).join("");
+    document.getElementById("sabor1").innerHTML = opts; document.getElementById("sabor2").innerHTML = opts;
     render("todas");
-    setTimeout(() => document.getElementById("splash").classList.add("hidden"), 2000);
+    setTimeout(() => document.getElementById("splash").classList.add("hidden"), 1500);
 };
 </script>
 </body>
