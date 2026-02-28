@@ -6,87 +6,33 @@
     <title>La Casa da Pizza | O Plano Perfeito</title>
     <style>
         :root { --primary: #8B0000; --accent: #ff3c00; --success: #25D366; --gold: #FFD700; --bg: #f8f8f8; --text: #333; }
-        
-        body { 
-            margin: 0; 
-            font-family: -apple-system, system-ui, sans-serif; 
-            background-color: var(--bg); 
-            color: var(--text); 
-            padding-bottom: 100px; 
-        }
-
-        /* Splash Screen */
+        body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background-color: var(--bg); color: var(--text); padding-bottom: 100px; }
         #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--primary); display: flex; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.5s; }
         #splash.hidden { opacity: 0; visibility: hidden; }
         #splash img { width: 120px; }
-
-        /* Header e Banner */
         .header { background: #000; color: white; display: flex; align-items: center; padding: 12px; gap: 12px; }
         .header img { width: 50px; border-radius: 8px; border: 2px solid var(--primary); }
         .banner { background: linear-gradient(90deg, var(--primary), var(--accent)); color: white; padding: 8px; text-align: center; font-weight: bold; font-size: 11px; }
-
-        /* Categorias Sticky */
         .categories { display: flex; gap: 10px; padding: 15px; background: white; overflow-x: auto; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #eee; }
         .categories::-webkit-scrollbar { display: none; }
         .cat-btn { padding: 8px 18px; border-radius: 20px; border: 1px solid #ddd; background: white; cursor: pointer; white-space: nowrap; font-size: 14px; }
         .cat-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
-
-        /* LISTA ESTILO IFOOD (TEXTO ESQUERDA, IMAGEM DIREITA) */
         .grid { display: flex; flex-direction: column; gap: 1px; background: #eee; }
-        
-        .card { 
-            background: white; 
-            padding: 15px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: flex-start; 
-            gap: 15px;
-            transition: background 0.2s;
-        }
-        .card:active { background: #f9f9f9; }
-
+        .card { background: white; padding: 15px; display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; }
         .card-content { flex: 1; }
         .card-content h3 { margin: 0 0 5px 0; font-size: 16px; color: #333; font-weight: 600; }
         .card-content small { display: block; color: #666; font-size: 13px; line-height: 1.4; margin-bottom: 8px; }
-        
-        /* Imagem à direita */
-        .card img { 
-            width: 90px; 
-            height: 90px; 
-            border-radius: 8px; 
-            object-fit: cover; 
-            flex-shrink: 0;
-            background: #eee;
-        }
-
+        .card img { width: 90px; height: 90px; border-radius: 8px; object-fit: cover; flex-shrink: 0; background: #eee; }
         .price { color: #333; font-weight: bold; font-size: 15px; margin-top: 5px; display: block; }
-        
-        .add-btn { 
-            background: white; 
-            color: var(--primary); 
-            border: 1px solid var(--primary); 
-            padding: 6px 15px; 
-            border-radius: 8px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            margin-top: 10px;
-            font-size: 13px;
-        }
+        .add-btn { background: white; color: var(--primary); border: 1px solid var(--primary); padding: 6px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; font-size: 13px; }
         .btn-combo { background: var(--gold) !important; color: black !important; border: none !important; }
-
-        /* Meia a Meia Box */
         .meia-box { background: white; margin: 15px; padding: 15px; border-radius: 12px; border: 1px dashed var(--primary); }
-        .meia-box select { width: 100%; padding: 10px; margin-bottom: 8px; border-radius: 8px; border: 1px solid #ddd; }
-
-        /* Botão Carrinho Fixo */
+        .meia-box select, .modal-content select, .modal-content input { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; }
         .cart-btn { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: var(--success); color: white; padding: 15px; border-radius: 12px; font-weight: bold; text-align: center; z-index: 999; box-shadow: 0 5px 15px rgba(0,0,0,0.2); cursor: pointer; }
-
-        /* Modais */
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(4px); }
         .modal-content { background: white; width: 92%; max-width: 400px; padding: 20px; border-radius: 15px; max-height: 85vh; overflow-y: auto; }
-        .modal-content input, .modal-content select { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; }
-        
         .combo-item-box { background: #f4f4f4; padding: 10px; border-radius: 10px; margin-bottom: 8px; border-left: 4px solid var(--gold); }
+        #aviso-pagamento { display: none; background: #e7f3ff; color: #0c5460; padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 12px; border: 1px solid #bee5eb; }
     </style>
 </head>
 <body>
@@ -98,7 +44,7 @@
     <h1 style="margin:0; font-size:18px;">La Casa da Pizza</h1>
 </header>
 
-<div class="banner">🚀 Entrega em Águas Claras, Taguatinga e Região</div>
+<div class="banner">🚀 Areal, Águas Claras, Taguatinga e Região</div>
 
 <div class="categories">
     <button class="cat-btn active" onclick="filtrar(event,'todas')">Todas</button>
@@ -117,7 +63,7 @@
         <option value="8">Borda Cheddar (+ R$ 8)</option>
         <option value="10">Borda Chocolate (+ R$ 10)</option>
     </select>
-    <button class="add-btn" style="width:100%;" onclick="addMeia()">Adicionar ao Carrinho</button>
+    <button class="add-btn" style="width:100%; background:var(--primary); color:white;" onclick="addMeia()">Adicionar ao Carrinho</button>
 </div>
 
 <div class="grid" id="lista"></div>
@@ -128,7 +74,7 @@
     <div class="modal-content">
         <h2 id="combo-titulo" style="color:var(--primary); margin:0 0 10px 0; font-size:18px;">Personalizar Combo</h2>
         <div id="combo-opcoes"></div>
-        <label style="font-size:13px; font-weight:bold;">🥤 Escolha o Refrigerante (1.5L):</label>
+        <label style="font-size:13px; font-weight:bold;">🥤 Refrigerante (1.5L):</label>
         <select id="combo-refri">
             <option>Coca-Cola</option>
             <option>Guaraná Antarctica</option>
@@ -158,16 +104,25 @@
             <option value="15">Taguatinga Norte - R$ 15,00</option>
             <option value="15">Samambaia Norte - R$ 15,00</option>
         </select>
-        <select id="pagamento">
-            <option disabled selected>Forma de Pagamento</option>
-            <option>Pix</option><option>Dinheiro</option><option>Cartão</option>
+        <label style="font-size: 13px; font-weight: bold;">💳 Forma de Pagamento:</label>
+        <select id="pagamento" onchange="verificarPagamento()">
+            <option value="Dinheiro">Dinheiro (Pagar na Entrega)</option>
+            <option value="Cartão (Maquininha)">Cartão (Maquininha na Entrega)</option>
+            <option value="Pix Online">PIX / Cartão Online (Pagar Agora)</option>
         </select>
-        <button class="add-btn" onclick="finalizar()" style="background:var(--success); color:white; border:none; width:100%; padding:15px;">Finalizar no WhatsApp</button>
+        <div id="aviso-pagamento">
+            💡 <strong>Pagamento Online selecionado:</strong><br>
+            Ao clicar, você será levado ao checkout do Mercado Pago. Envie o comprovante no WhatsApp!
+        </div>
+        <button class="add-btn" id="btn-finalizar" onclick="finalizar()" style="background:var(--success); color:white; border:none; width:100%; padding:15px;">Finalizar no WhatsApp</button>
         <button onclick="fecharCarrinho()" style="background:none; border:none; color:#999; width:100%; margin-top:10px;">Continuar Comprando</button>
     </div>
 </div>
 
 <script>
+// LINK ATUALIZADO
+const LINK_MERCADO_PAGO = "https://link.mercadopago.com.br/pedidolacasadapizza"; 
+
 const sabores = [
     {nome:"Pizza do Professor",cat:"salgada",preco:49.90,img:"professor.jpg",desc:"Mussarela, carne moída temperada, bacon e barbecue."},
     {nome:"Pizza da Lisboa",cat:"salgada",preco:49.90,img:"lisboa.jpg",desc:"Mussarela, bacon crocante e abacaxi selecionado."},
@@ -187,7 +142,6 @@ const sabores = [
     {nome:"Pizza de Romeo e Julieta",cat:"doce",preco:39.90,img:"romeo.jpg",desc:"Mussarela derretida com goiabada cascão."},
     {nome:"Pizza de Chocolate",cat:"doce",preco:39.90,img:"chocolate.jpg",desc:"Chocolate ao leite cremoso artesanal."},
     {nome:"Pizza de Prestígio",cat:"doce",preco:39.90,img:"prestigio.jpg",desc:"Chocolate ao leite com coco ralado."},
-    // Combos
     {nome:"Combo O Professor", cat:"combo", preco:64.90, img:"combo-prof.jpg", desc:"1 Salgada (até 2 sabores) + Refri 1.5L"},
     {nome:"Combo Plano Bella Ciao", cat:"combo", preco:99.90, img:"combo-bella.jpg", desc:"2 Salgadas + 1 Doce Grande + Refri 1.5L"},
     {nome:"Combo Dalí", cat:"combo", preco:75.00, img:"combo-dali.jpg", desc:"1 Salgada + 1 Doce Grande + Refri 1.5L"}
@@ -210,12 +164,23 @@ function render(cat){
                 <h3>${s.nome}</h3>
                 <small>${s.desc}</small>
                 <span class="price">R$ ${s.preco.toFixed(2)}</span>
-                ${s.cat === 'combo' ? 
-                    `<button class="add-btn btn-combo" onclick="abrirCombo('${s.nome}')">Configurar</button>` : 
-                    `<button class="add-btn" onclick="add('${s.nome}')">Adicionar</button>`}
+                ${s.cat === 'combo' ? `<button class="add-btn btn-combo" onclick="abrirCombo('${s.nome}')">Configurar</button>` : `<button class="add-btn" onclick="add('${s.nome}')">Adicionar</button>`}
             </div>
             <img src="${s.img}" onerror="this.src='https://via.placeholder.com/100?text=Pizza'">
         </div>`).join("");
+}
+
+function verificarPagamento() {
+    const pag = document.getElementById("pagamento").value;
+    const aviso = document.getElementById("aviso-pagamento");
+    const btn = document.getElementById("btn-finalizar");
+    if(pag === "Pix Online") {
+        aviso.style.display = "block";
+        btn.innerText = "Pagar e Enviar Pedido";
+    } else {
+        aviso.style.display = "none";
+        btn.innerText = "Finalizar no WhatsApp";
+    }
 }
 
 function abrirCombo(nome){
@@ -224,7 +189,7 @@ function abrirCombo(nome){
     document.getElementById("combo-titulo").innerText = nome;
     document.getElementById("combo-opcoes").innerHTML = config.map((p, i) => `
         <div class="combo-item-box">
-            <strong style="font-size:13px;">Pizza ${i+1} (${p.t}):</strong>
+            <strong style="font-size:12px;">Pizza ${i+1} (${p.t}):</strong>
             <select class="c-s1">${sabores.filter(s => s.cat === p.t).map(s => `<option value="${s.nome}">${s.nome}</option>`).join("")}</select>
             <select class="c-s2"><option value="">(Meia Opcional)</option>${sabores.filter(s => s.cat === p.t).map(s => `<option value="${s.nome}">${s.nome}</option>`).join("")}</select>
         </div>`).join("");
@@ -239,10 +204,7 @@ function confirmarCombo(){
     fecharModalCombo(); atualizarContador();
 }
 
-function add(nome){
-    carrinho.push(sabores.find(s => s.nome === nome));
-    atualizarContador();
-}
+function add(nome){ carrinho.push(sabores.find(s => s.nome === nome)); atualizarContador(); }
 
 function addMeia(){
     const s1 = sabores[document.getElementById("sabor1").value], s2 = sabores[document.getElementById("sabor2").value], borda = parseFloat(document.getElementById("borda").value);
@@ -260,7 +222,7 @@ function abrirCarrinho(){
     document.getElementById("itens").innerHTML = carrinho.map((p, i) => `
         <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:13px; border-bottom:1px solid #eee; padding-bottom:5px;">
             <div><b>${p.nome}</b><br><small style="color:#666">${p.obs || ''}</small></div>
-            <div>R$ ${p.preco.toFixed(2)} <button onclick="remover(${i})" style="color:red; border:none; background:none; font-weight:bold; padding-left:10px;">X</button></div>
+            <div>R$ ${p.preco.toFixed(2)} <button onclick="remover(${i})" style="color:red; border:none; background:none; font-weight:bold;">X</button></div>
         </div>`).join("");
     atualizarTotalModal();
     document.getElementById("modal").style.display = "flex";
@@ -275,12 +237,17 @@ function atualizarTotalModal(){
 }
 
 function finalizar(){
-    const n = document.getElementById("nome").value, e = document.getElementById("endereco").value, b = document.getElementById("bairro");
-    if(!n || !e || !b.value) return alert("Por favor, preencha todos os dados!");
+    const n = document.getElementById("nome").value, e = document.getElementById("endereco").value, b = document.getElementById("bairro"), p = document.getElementById("pagamento").value;
+    if(!n || !e || !b.value) return alert("Preencha todos os dados!");
     const taxa = parseFloat(b.value), sub = carrinho.reduce((a, b) => a + b.preco, 0);
-    let msg = `*NOVO PEDIDO - LA CASA DA PIZZA*%0A%0A*Cliente:* ${n}%0A*End:* ${e}%0A*Bairro:* ${b.options[b.selectedIndex].text}%0A%0A*ITENS:*%0A`;
-    carrinho.forEach(p => msg += `• ${p.nome} - R$ ${p.preco.toFixed(2)}%0A  ${p.obs || ''}%0A`);
-    msg += `%0A*TOTAL: R$ ${(sub+taxa).toFixed(2)}*`;
+    const total = (sub+taxa).toFixed(2);
+    let msg = `*NOVO PEDIDO - LA CASA DA PIZZA*%0A%0A*Cliente:* ${n}%0A*End:* ${e}%0A*Bairro:* ${b.options[b.selectedIndex].text}%0A*Pagamento:* ${p}%0A%0A*ITENS:*%0A`;
+    carrinho.forEach(item => msg += `• ${item.nome} - R$ ${item.preco.toFixed(2)}%0A  ${item.obs || ''}%0A`);
+    msg += `%0A*TOTAL: R$ ${total}*`;
+    if(p === "Pix Online") {
+        window.open(LINK_MERCADO_PAGO, '_blank');
+        alert("Estamos te levando para o Pagamento. Após pagar, clique em OK para enviar o pedido no WhatsApp!");
+    }
     window.open(`https://wa.me/5561998791411?text=${msg}`);
 }
 
