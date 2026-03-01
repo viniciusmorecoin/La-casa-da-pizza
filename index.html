@@ -287,5 +287,13 @@ window.onload = () => {
     setTimeout(() => document.getElementById("splash").classList.add("hidden"), 1500);
 };
 </script>
+    <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js')
+      .then(() => console.log("Service Worker Ativo!"))
+      .catch(err => console.log("Erro no SW:", err));
+  }
+</script>
+
 </body>
 </html>
