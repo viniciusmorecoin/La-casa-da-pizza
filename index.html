@@ -58,17 +58,15 @@
 </header>
 
 <div class="banner">🚀 Delivery em Areal, Águas Claras e Região</div>
-<div style="padding:10px;background:#fff;border-bottom:1px solid #eee;text-align:center;font-size:13px;">
-🎁 Fidelidade: a cada 10 pedidos ganhe uma pizza!
-<div style="height:8px;background:#eee;border-radius:10px;margin-top:6px;">
-<div id="barra-fidelidade" style="height:100%;width:0%;background:#FFD700;border-radius:10px;"></div>
-</div>
-</div>
+
 <div style="background:#fff3cd;padding:10px;text-align:center;font-size:13px;border-bottom:1px solid #eee;">
-🎁 Programa Fidelidade: A cada 10 pedidos ganhe uma pizza grátis!
-<br>
-Pontos: <b id="pontos-fidelidade">0</b>/10
+    🎁 Programa Fidelidade: A cada 10 pedidos ganhe uma pizza grátis!
+    <div style="height:8px;background:#eee;border-radius:10px;margin:8px auto; width: 80%;">
+        <div id="barra-fidelidade" style="height:100%;width:0%;background:#FFD700;border-radius:10px;transition:0.5s;"></div>
+    </div>
+    Pontos: <b id="pontos-fidelidade">0</b>/10
 </div>
+
 <div class="categories">
     <button class="cat-btn active" onclick="filtrar(event,'todas')">Todas</button>
     <button class="cat-btn" onclick="filtrar(event,'salgada')">Salgadas</button>
@@ -114,6 +112,7 @@ Pontos: <b id="pontos-fidelidade">0</b>/10
         <div id="itens"></div>
         <div id="total-display" style="text-align:right; margin: 15px 0; font-size:14px;"></div>
         <hr style="border:0; border-top:1px solid #eee;">
+        
         <input id="nome" placeholder="Seu Nome Completo">
         <input id="endereco" placeholder="Endereço, Número e Complemento">
         <select id="bairro" onchange="atualizarTotalModal()">
@@ -128,24 +127,26 @@ Pontos: <b id="pontos-fidelidade">0</b>/10
             <option value="15">Taguatinga Norte - R$ 15,00</option>
             <option value="15">Samambaia Norte - R$ 15,00</option>
         </select>
+
         <label style="font-size:13px;font-weight:bold;">🎟 Cupom de desconto</label>
-<input id="cupom" placeholder="Digite seu cupom">
+        <div style="display:flex; gap:5px;">
+            <input id="cupom" placeholder="Digite seu cupom" style="margin-bottom:0; flex:1;">
+            <button onclick="aplicarCupom()" style="padding:10px; border:none; background:#333; color:white; border-radius:8px; cursor:pointer;">Aplicar</button>
+        </div>
+        <div id="cupom-msg" style="font-size:12px; margin: 5px 0 10px 0;"></div>
 
-<button onclick="aplicarCupom()" style="width:100%;padding:10px;border:none;background:#333;color:white;border-radius:8px;margin-bottom:10px;">
-Aplicar Cupom
-</button>
-
-<div id="cupom-msg" style="font-size:12px;color:green;margin-bottom:10px;"></div>
         <label style="font-size: 13px; font-weight: bold;">💳 Forma de Pagamento:</label>
         <select id="pagamento" onchange="verificarPagamento()">
             <option value="Maquininha (Cartão)">Cartão (Maquininha na Entrega)</option>
             <option value="Dinheiro">Dinheiro (Pagar na Entrega)</option>
             <option value="Pix Online">Pagar Agora (PIX / Cartão Online)</option>
         </select>
+
         <div id="aviso-pagamento"></div>
         <div id="btn-mp-style" onclick="abrirCheckout()">💳 PAGAR AGORA COM MERCADO PAGO</div>
-        <button class="add-btn" id="btn-finalizar" onclick="finalizar()" style="background:var(--success); color:white; border:none; width:100%; padding:15px;">Finalizar Pedido no WhatsApp</button>
-        <button onclick="fecharCarrinho()" style="background:none; border:none; color:#999; width:100%; margin-top:10px;">Voltar ao Cardápio</button>
+        
+        <button class="add-btn" id="btn-finalizar" onclick="finalizar()" style="background:var(--success); color:white; border:none; width:100%; padding:15px; font-size:16px;">Finalizar Pedido no WhatsApp</button>
+        <button onclick="fecharCarrinho()" style="background:none; border:none; color:#999; width:100%; margin-top:10px; cursor:pointer;">Voltar ao Cardápio</button>
     </div>
 </div>
 
@@ -154,7 +155,6 @@ const LINK_MERCADO_PAGO = "https://link.mercadopago.com.br/pedidolacasadapizza";
 const WHATSAPP_NUM = "5561998791411";
 
 const sabores = [
-    // SALGADAS
     {nome:"Pizza do Professor",cat:"salgada",preco:49.90,img:"IMG_0206.png",desc:"Mussarela, carne moída temperada, bacon e barbecue."},
     {nome:"Pizza da Lisboa",cat:"salgada",preco:49.90,img:"IMG_0207.png",desc:"Mussarela, bacon crocante e abacaxi selecionado."},
     {nome:"Pizza do Berlim",cat:"salgada",preco:49.90,img:"IMG_0208.png",desc:"Molho de tomate, mussarela e pepperoni fatiado."},
@@ -163,28 +163,14 @@ const sabores = [
     {nome:"Pizza da Nairóbi",cat:"salgada",preco:49.90,img:"IMG_0211.png",desc:"Mussarela, frango desfiado e catupiry original."},
     {nome:"Pizza do Palermo",cat:"salgada",preco:49.90,img:"IMG_0212.png",desc:"Mussarela, tomate, manjericão e orégano."},
     {nome:"Pizza do Marselha",cat:"salgada",preco:49.90,img:"IMG_0213.png",desc:"Mussarela, cogumelos e presunto fatiado."},
-    {nome:"Pizza do Denver",cat:"salgada",preco:49.90,img:"",desc:"Mussarela, calabresa e pimenta calabresa."},
-    {nome:"Pizza do Oslo",cat:"salgada",preco:49.90,img:"oslo.jpg",desc:"Mussarela, carne seca desfiada e catupiry."},
-    {nome:"Pizza da Estocolmo",cat:"salgada",preco:49.90,img:"estocolmo.jpg",desc:"Mussarela, presunto, tomate e azeitona."},
-    {nome:"Pizza do Moscou",cat:"salgada",preco:49.90,img:"moscou.jpg",desc:"Queijo prato, cheddar, catupiry e mussarela."},
-    {nome:"Pizza do Bogotá",cat:"salgada",preco:49.90,img:"bogota.jpg",desc:"Mussarela, carne moída, milho e orégano."},
-    
-    // DOCES
     {nome:"Pizza de Confete",cat:"doce",preco:39.90,img:"confete.jpg",desc:"Chocolate ao leite cremoso com confetes coloridos."},
     {nome:"Pizza de Banana Nevada",cat:"doce",preco:39.90,img:"banana.jpg",desc:"Banana fatiada, chocolate branco e leite em pó."},
-    {nome:"Pizza Romeo e Julieta",cat:"doce",preco:39.90,img:"romeo.jpg",desc:"Mussarela derretida com goiabada cascão especial."},
-    {nome:"Pizza de Chocolate",cat:"doce",preco:39.90,img:"chocolate.jpg",desc:"Pura camada de chocolate ao leite artesanal."},
-    {nome:"Pizza de Prestígio",cat:"doce",preco:39.90,img:"prestigio.jpg",desc:"Chocolate ao leite coberto com coco ralado fino."},
-
-    // COMBOS
-    {nome:"Combo O Professor", cat:"combo", preco:64.90, img:"combo-prof.jpg", desc:"1 Pizza Salgada (8 fatias) + Refri 1.5L"},
-    {nome:"Combo Plano Bella Ciao", cat:"combo", preco:99.90, img:"combo-bella.jpg", desc:"2 Pizzas Salgadas + 1 Doce + Refri 1.5L"},
+    {nome:"Combo O Professor", cat:"combo", preco:64.90, img:"combo-prof.jpg", desc:"1 Pizza Salgada + Refri 1.5L"},
     {nome:"Combo Dalí", cat:"combo", preco:75.00, img:"combo-dali.jpg", desc:"1 Pizza Salgada + 1 Pizza Doce + Refri 1.5L"}
 ];
 
 const configCombos = {
     "Combo O Professor": [{t:"salgada"}],
-    "Combo Plano Bella Ciao": [{t:"salgada"}, {t:"salgada"}, {t:"doce"}],
     "Combo Dalí": [{t:"salgada"}, {t:"doce"}]
 };
 
@@ -206,38 +192,21 @@ function render(cat){
         </div>`).join("");
 }
 
-function verificarPagamento() {
-    const pag = document.getElementById("pagamento").value;
-    const aviso = document.getElementById("aviso-pagamento");
-    const btnMP = document.getElementById("btn-mp-style");
-    const btnWhats = document.getElementById("btn-finalizar");
-
-    if(pag === "Pix Online") {
-        aviso.style.display = "block";
-        aviso.innerHTML = "✨ <strong>Pagamento Digital:</strong> Clique no botão azul para pagar. Após o pagamento, clique no botão verde para enviar o pedido!";
-        btnMP.style.display = "block";
-        btnWhats.style.display = "none";
-    } else {
-        aviso.style.display = "none";
-        btnMP.style.display = "none";
-        btnWhats.style.display = "block";
-        btnWhats.innerText = "Finalizar Pedido no WhatsApp";
-        btnWhats.style.background = "var(--success)";
-    }
+function filtrar(e, cat){
+    document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
+    e.target.classList.add("active");
+    render(cat);
 }
 
-function abrirCheckout() {
-    window.open(LINK_MERCADO_PAGO, '_blank');
-    const btnWhats = document.getElementById("btn-finalizar");
-    btnWhats.style.display = "block";
-    btnWhats.innerText = "✅ JÁ PAGUEI! Confirmar no WhatsApp";
-    btnWhats.style.background = "#25D366";
+function add(nome){
+    carrinho.push(sabores.find(s => s.nome === nome));
+    atualizarContador();
 }
-
-function add(nome){ carrinho.push(sabores.find(s => s.nome === nome)); atualizarContador(); }
 
 function addMeia(){
-    const s1 = sabores[document.getElementById("sabor1").value], s2 = sabores[document.getElementById("sabor2").value], borda = parseFloat(document.getElementById("borda").value);
+    const s1 = sabores[document.getElementById("sabor1").value];
+    const s2 = sabores[document.getElementById("sabor2").value];
+    const borda = parseFloat(document.getElementById("borda").value);
     if(!s1 || !s2) return alert("Escolha os sabores primeiro!");
     carrinho.push({ nome: `Meia ${s1.nome.replace('Pizza do ','')} / ${s2.nome.replace('Pizza do ','')}`, preco: Math.max(s1.preco, s2.preco) + borda });
     atualizarContador();
@@ -246,35 +215,28 @@ function addMeia(){
 
 function abrirCombo(nome){
     comboEmEdicao = sabores.find(s => s.nome === nome);
-    const config = configCombos[nome];
     document.getElementById("combo-titulo").innerText = nome;
-    document.getElementById("combo-opcoes").innerHTML = config.map((p, i) => `
+    document.getElementById("combo-opcoes").innerHTML = configCombos[nome].map((p, i) => `
         <div class="combo-item-box">
-            <strong style="font-size:12px;">Item ${i+1} (${p.t}):</strong>
+            <strong>Item ${i+1} (${p.t}):</strong>
             <select class="c-s1">${sabores.filter(s => s.cat === p.t).map(s => `<option value="${s.nome}">${s.nome}</option>`).join("")}</select>
-            <select class="c-s2"><option value="">(Meia Opcional)</option>${sabores.filter(s => s.cat === p.t).map(s => `<option value="${s.nome}">${s.nome}</option>`).join("")}</select>
         </div>`).join("");
     document.getElementById("modal-combo").style.display = "flex";
 }
 
 function confirmarCombo(){
-    const s1 = document.querySelectorAll(".c-s1"), s2 = document.querySelectorAll(".c-s2");
+    const s1 = document.querySelectorAll(".c-s1");
     const refri = document.getElementById("combo-refri").value;
-    let desc = Array.from(s1).map((s, i) => `Item ${i+1}: ${s2[i].value ? 'Meia '+s.value+' / Meia '+s2[i].value : s.value}`).join(" | ");
+    let desc = Array.from(s1).map((s, i) => `Item ${i+1}: ${s.value}`).join(" | ");
     carrinho.push({ nome: `${comboEmEdicao.nome} (${refri})`, preco: comboEmEdicao.preco, obs: desc });
     fecharModalCombo(); atualizarContador();
 }
 
-function atualizarContador(){ document.getElementById("contador").innerText = carrinho.length; }
-function fecharModalCombo(){ document.getElementById("modal-combo").style.display = "none"; }
-function fecharCarrinho(){ document.getElementById("modal").style.display = "none"; }
-function filtrar(e, cat){ document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active")); e.target.classList.add("active"); render(cat); }
-
 function abrirCarrinho(){
     document.getElementById("itens").innerHTML = carrinho.map((p, i) => `
-        <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:13px; border-bottom:1px solid #eee; padding-bottom:5px;">
-            <div><b>${p.nome}</b><br><small style="color:#666">${p.obs || ''}</small></div>
-            <div>R$ ${p.preco.toFixed(2)} <button onclick="remover(${i})" style="color:red; border:none; background:none; cursor:pointer;">X</button></div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:12px; border-bottom:1px solid #eee; padding-bottom:5px;">
+            <div><b>${p.nome}</b><br><small>${p.obs || ''}</small></div>
+            <div>R$ ${p.preco.toFixed(2)} <button onclick="remover(${i})" style="color:red; border:none; background:none;">X</button></div>
         </div>`).join("");
     atualizarTotalModal();
     document.getElementById("modal").style.display = "flex";
@@ -283,164 +245,77 @@ function abrirCarrinho(){
 function remover(i){ carrinho.splice(i,1); abrirCarrinho(); atualizarContador(); }
 
 function atualizarTotalModal(){
-
-const taxa = parseFloat(document.getElementById("bairro").value) || 0;
-
-const sub = carrinho.reduce((a, b) => a + b.preco, 0);
-
-const total = sub + taxa - desconto;
-
-document.getElementById("total-display").innerHTML =
-`Subtotal: R$ ${sub.toFixed(2)} |
-Desconto: R$ ${desconto.toFixed(2)} |
-Taxa: R$ ${taxa.toFixed(2)}
-<br>
-<strong style="font-size:18px;color:var(--success)">
-Total: R$ ${total.toFixed(2)}
-</strong>`;
-
-}
     const taxa = parseFloat(document.getElementById("bairro").value) || 0;
     const sub = carrinho.reduce((a, b) => a + b.preco, 0);
-    document.getElementById("total-display").innerHTML = `Subtotal: R$ ${sub.toFixed(2)} | Taxa Entrega: R$ ${taxa.toFixed(2)}<br><strong style="font-size:18px; color:var(--success)">Total: R$ ${(sub+taxa).toFixed(2)}</strong>`;
+    const total = sub + taxa - desconto;
+    document.getElementById("total-display").innerHTML = `
+        Subtotal: R$ ${sub.toFixed(2)} | Taxa: R$ ${taxa.toFixed(2)} | Desconto: R$ ${desconto.toFixed(2)}
+        <br><strong style="font-size:18px; color:var(--success)">Total: R$ ${total.toFixed(2)}</strong>`;
+}
+
+function verificarPagamento() {
+    const pag = document.getElementById("pagamento").value;
+    const aviso = document.getElementById("aviso-pagamento");
+    const btnMP = document.getElementById("btn-mp-style");
+    const btnWhats = document.getElementById("btn-finalizar");
+
+    if(pag === "Pix Online") {
+        aviso.style.display = "block";
+        aviso.innerHTML = "✨ Pague agora para agilizar sua entrega!";
+        btnMP.style.display = "block";
+        btnWhats.style.display = "none";
+    } else {
+        aviso.style.display = "none";
+        btnMP.style.display = "none";
+        btnWhats.style.display = "block";
+        btnWhats.innerText = "Finalizar Pedido no WhatsApp";
+    }
+}
+
+function abrirCheckout() {
+    window.open(LINK_MERCADO_PAGO, '_blank');
+    document.getElementById("btn-finalizar").style.display = "block";
+    document.getElementById("btn-finalizar").innerText = "✅ JÁ PAGUEI! Enviar Pedido";
+}
+
+function aplicarCupom(){
+    const c = document.getElementById("cupom").value.toUpperCase();
+    if(c === "PIZZA10") { desconto = 10; document.getElementById("cupom-msg").innerText="Cupom R$10 Aplicado!"; }
+    else { desconto = 0; document.getElementById("cupom-msg").innerText="Cupom Inválido"; }
+    atualizarTotalModal();
+}
+
+function carregarFidelidade(){
+    let p = localStorage.getItem("fidelidade") || 0;
+    document.getElementById("pontos-fidelidade").innerText = p;
+    document.getElementById("barra-fidelidade").style.width = (p * 10) + "%";
 }
 
 function finalizar(){
-    const n = document.getElementById("nome").value, e = document.getElementById("endereco").value, b = document.getElementById("bairro"), p = document.getElementById("pagamento").value;
-    salvarCliente(n);
-    if(!n || !e || !b.value) return alert("Por favor, preencha nome, endereço e bairro!");
-    const taxa = parseFloat(b.value), sub = carrinho.reduce((a, b) => a + b.preco, 0);
-    const total = (sub+taxa).toFixed(2);
-    let msg = `*NOVO PEDIDO - LA CASA DA PIZZA*%0A%0A*Cliente:* ${n}%0A*End:* ${e}%0A*Bairro:* ${b.options[b.selectedIndex].text}%0A*Pagamento:* ${p}%0A%0A*ITENS:*%0A`;
-    carrinho.forEach(item => msg += `• ${item.nome} - R$ ${item.preco.toFixed(2)}%0A  ${item.obs || ''}%0A`);
-    msg += `%0A*TOTAL: R$ ${total}*`;
-    adicionarPonto();
+    const n = document.getElementById("nome").value, e = document.getElementById("endereco").value, b = document.getElementById("bairro");
+    if(!n || !e || !b.value) return alert("Preencha todos os campos!");
+    
+    let pontos = parseInt(localStorage.getItem("fidelidade") || 0);
+    pontos = (pontos + 1) % 11;
+    localStorage.setItem("fidelidade", pontos);
 
-adicionarPonto();
-
-window.open(`https://wa.me/${WHATSAPP_NUM}?text=${msg}`);
-}
-// ===============================
-// PROGRAMA FIDELIDADE
-// ===============================
-
-function carregarPontos(){
-
-let pontos = localStorage.getItem("fidelidadePizza");
-
-if(pontos == null){
-pontos = 0;
+    let msg = `*PEDIDO LA CASA DA PIZZA*%0A*Cliente:* ${n}%0A*End:* ${e}%0A*Pagamento:* ${document.getElementById("pagamento").value}%0A%0A*ITENS:*%0A`;
+    carrinho.forEach(i => msg += `- ${i.nome} (R$ ${i.preco.toFixed(2)})%0A`);
+    
+    window.open(`https://wa.me/${WHATSAPP_NUM}?text=${msg}`);
 }
 
-document.getElementById("pontos-fidelidade").innerText = pontos;
+function atualizarContador(){ document.getElementById("contador").innerText = carrinho.length; }
+function fecharModalCombo(){ document.getElementById("modal-combo").style.display = "none"; }
+function fecharCarrinho(){ document.getElementById("modal").style.display = "none"; }
 
-}
-
-function adicionarPonto(){
-
-let pontos = localStorage.getItem("fidelidadePizza") || 0;
-
-pontos++;
-
-if(pontos >= 10){
-
-alert("🎉 Parabéns! Você ganhou uma pizza grátis!");
-
-carrinho.push({
-nome:"🍕 Pizza Fidelidade Grátis",
-preco:0
-});
-
-pontos = 0;
-
-}
-
-localStorage.setItem("fidelidadePizza", pontos);
-
-atualizarBarra();
-
-}
-function aplicarCupom(){
-
-const cupom = document.getElementById("cupom").value.toUpperCase();
-
-if(cupom === "PIZZA10"){
-
-desconto = 10;
-
-document.getElementById("cupom-msg").innerText="Cupom aplicado! R$10 de desconto";
-
-}
-
-else if(cupom === "CLIENTE5"){
-
-desconto = 5;
-
-document.getElementById("cupom-msg").innerText="Cupom aplicado! R$5 de desconto";
-
-}
-
-else{
-
-document.getElementById("cupom-msg").innerText="Cupom inválido";
-
-desconto = 0;
-
-}
-
-atualizarTotalModal();
-
-}
-function atualizarBarra(){
-
-let pontos = localStorage.getItem("fidelidadePizza") || 0;
-
-let progresso = (pontos/10)*100;
-
-document.getElementById("barra-fidelidade").style.width = progresso + "%";
-
-}
-
-function salvarCliente(nome){
-
-let ranking = JSON.parse(localStorage.getItem("rankingClientes")) || {};
-
-if(!ranking[nome]) ranking[nome]=0;
-
-ranking[nome]++;
-
-localStorage.setItem("rankingClientes",JSON.stringify(ranking));
-
-}
-
-function notificar(msg){
-
-if(Notification.permission==="granted"){
-
-new Notification("La Casa da Pizza 🍕",{
-body:msg,
-icon:"logo.png"
-});
-
-}
-
-}
-
-Notification.requestPermission();
 window.onload = () => {
-    let opts = sabores.filter(s => s.cat !== 'combo').map((s, i) => `<option value="${sabores.indexOf(s)}">${s.nome}</option>`).join("");
+    let opts = sabores.filter(s => s.cat === 'salgada').map(s => `<option value="${sabores.indexOf(s)}">${s.nome}</option>`).join("");
     document.getElementById("sabor1").innerHTML = opts; document.getElementById("sabor2").innerHTML = opts;
     render("todas");
-    setTimeout(() => document.getElementById("splash").classList.add("hidden"), 1500);
+    carregarFidelidade();
+    setTimeout(() => document.getElementById("splash").classList.add("hidden"), 1000);
 };
 </script>
-    <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js')
-      .then(() => console.log("Service Worker Ativo!"))
-      .catch(err => console.log("Erro no SW:", err));
-  }
-</script>
-
 </body>
 </html>
