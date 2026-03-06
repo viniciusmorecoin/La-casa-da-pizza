@@ -58,6 +58,12 @@
 </header>
 
 <div class="banner">🚀 Delivery em Areal, Águas Claras e Região</div>
+<div style="padding:10px;background:#fff;border-bottom:1px solid #eee;text-align:center;font-size:13px;">
+🎁 Fidelidade: a cada 10 pedidos ganhe uma pizza!
+<div style="height:8px;background:#eee;border-radius:10px;margin-top:6px;">
+<div id="barra-fidelidade" style="height:100%;width:0%;background:#FFD700;border-radius:10px;"></div>
+</div>
+</div>
 <div style="background:#fff3cd;padding:10px;text-align:center;font-size:13px;border-bottom:1px solid #eee;">
 🎁 Programa Fidelidade: A cada 10 pedidos ganhe uma pizza grátis!
 <br>
@@ -122,6 +128,14 @@ Pontos: <b id="pontos-fidelidade">0</b>/10
             <option value="15">Taguatinga Norte - R$ 15,00</option>
             <option value="15">Samambaia Norte - R$ 15,00</option>
         </select>
+        <label style="font-size:13px;font-weight:bold;">🎟 Cupom de desconto</label>
+<input id="cupom" placeholder="Digite seu cupom">
+
+<button onclick="aplicarCupom()" style="width:100%;padding:10px;border:none;background:#333;color:white;border-radius:8px;margin-bottom:10px;">
+Aplicar Cupom
+</button>
+
+<div id="cupom-msg" style="font-size:12px;color:green;margin-bottom:10px;"></div>
         <label style="font-size: 13px; font-weight: bold;">💳 Forma de Pagamento:</label>
         <select id="pagamento" onchange="verificarPagamento()">
             <option value="Maquininha (Cartão)">Cartão (Maquininha na Entrega)</option>
@@ -175,6 +189,7 @@ const configCombos = {
 };
 
 let carrinho = [];
+let desconto = 0;
 let comboEmEdicao = null;
 
 function render(cat){
@@ -268,6 +283,23 @@ function abrirCarrinho(){
 function remover(i){ carrinho.splice(i,1); abrirCarrinho(); atualizarContador(); }
 
 function atualizarTotalModal(){
+
+const taxa = parseFloat(document.getElementById("bairro").value) || 0;
+
+const sub = carrinho.reduce((a, b) => a + b.preco, 0);
+
+const total = sub + taxa - desconto;
+
+document.getElementById("total-display").innerHTML =
+`Subtotal: R$ ${sub.toFixed(2)} |
+Desconto: R$ ${desconto.toFixed(2)} |
+Taxa: R$ ${taxa.toFixed(2)}
+<br>
+<strong style="font-size:18px;color:var(--success)">
+Total: R$ ${total.toFixed(2)}
+</strong>`;
+
+}
     const taxa = parseFloat(document.getElementById("bairro").value) || 0;
     const sub = carrinho.reduce((a, b) => a + b.preco, 0);
     document.getElementById("total-display").innerHTML = `Subtotal: R$ ${sub.toFixed(2)} | Taxa Entrega: R$ ${taxa.toFixed(2)}<br><strong style="font-size:18px; color:var(--success)">Total: R$ ${(sub+taxa).toFixed(2)}</strong>`;
@@ -275,12 +307,14 @@ function atualizarTotalModal(){
 
 function finalizar(){
     const n = document.getElementById("nome").value, e = document.getElementById("endereco").value, b = document.getElementById("bairro"), p = document.getElementById("pagamento").value;
+    salvarCliente(n);
     if(!n || !e || !b.value) return alert("Por favor, preencha nome, endereço e bairro!");
     const taxa = parseFloat(b.value), sub = carrinho.reduce((a, b) => a + b.preco, 0);
     const total = (sub+taxa).toFixed(2);
     let msg = `*NOVO PEDIDO - LA CASA DA PIZZA*%0A%0A*Cliente:* ${n}%0A*End:* ${e}%0A*Bairro:* ${b.options[b.selectedIndex].text}%0A*Pagamento:* ${p}%0A%0A*ITENS:*%0A`;
     carrinho.forEach(item => msg += `• ${item.nome} - R$ ${item.preco.toFixed(2)}%0A  ${item.obs || ''}%0A`);
     msg += `%0A*TOTAL: R$ ${total}*`;
+    adicionarPonto();
 
 adicionarPonto();
 
@@ -304,11 +338,7 @@ document.getElementById("pontos-fidelidade").innerText = pontos;
 
 function adicionarPonto(){
 
-let pontos = localStorage.getItem("fidelidadePizza");
-
-if(pontos == null){
-pontos = 0;
-}
+let pontos = localStorage.getItem("fidelidadePizza") || 0;
 
 pontos++;
 
@@ -316,17 +346,87 @@ if(pontos >= 10){
 
 alert("🎉 Parabéns! Você ganhou uma pizza grátis!");
 
+carrinho.push({
+nome:"🍕 Pizza Fidelidade Grátis",
+preco:0
+});
+
 pontos = 0;
 
 }
 
 localStorage.setItem("fidelidadePizza", pontos);
 
-carregarPontos();
+atualizarBarra();
+
+}
+function aplicarCupom(){
+
+const cupom = document.getElementById("cupom").value.toUpperCase();
+
+if(cupom === "PIZZA10"){
+
+desconto = 10;
+
+document.getElementById("cupom-msg").innerText="Cupom aplicado! R$10 de desconto";
 
 }
 
-carregarPontos();
+else if(cupom === "CLIENTE5"){
+
+desconto = 5;
+
+document.getElementById("cupom-msg").innerText="Cupom aplicado! R$5 de desconto";
+
+}
+
+else{
+
+document.getElementById("cupom-msg").innerText="Cupom inválido";
+
+desconto = 0;
+
+}
+
+atualizarTotalModal();
+
+}
+function atualizarBarra(){
+
+let pontos = localStorage.getItem("fidelidadePizza") || 0;
+
+let progresso = (pontos/10)*100;
+
+document.getElementById("barra-fidelidade").style.width = progresso + "%";
+
+}
+
+function salvarCliente(nome){
+
+let ranking = JSON.parse(localStorage.getItem("rankingClientes")) || {};
+
+if(!ranking[nome]) ranking[nome]=0;
+
+ranking[nome]++;
+
+localStorage.setItem("rankingClientes",JSON.stringify(ranking));
+
+}
+
+function notificar(msg){
+
+if(Notification.permission==="granted"){
+
+new Notification("La Casa da Pizza 🍕",{
+body:msg,
+icon:"logo.png"
+});
+
+}
+
+}
+
+Notification.requestPermission();
 window.onload = () => {
     let opts = sabores.filter(s => s.cat !== 'combo').map((s, i) => `<option value="${sabores.indexOf(s)}">${s.nome}</option>`).join("");
     document.getElementById("sabor1").innerHTML = opts; document.getElementById("sabor2").innerHTML = opts;
