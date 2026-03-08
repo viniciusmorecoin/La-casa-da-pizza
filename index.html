@@ -176,17 +176,37 @@
 
 <script>
     const sabores = [
-        {nome:"O Professor", cat:"salgada", preco:49.90, desc:"Mussarela, carne moída, bacon e barbecue.", img:"professor.png"},
-        {nome:"Denver", cat:"salgada", preco:49.90, desc:"Mussarela, calabresa e pimenta.", img:"denver.png"},
-        {nome:"Banana Nevada", cat:"doce", preco:39.90, desc:"Chocolate branco e banana.", img:"banana.png"},
-        {nome:"Combo Dalí", cat:"combo", preco:75.00, desc:"1 Salgada + 1 Doce + Refri 1.5L", img:"combo-dali.png"},
-        {nome:"Combo Plano de Mestre", cat:"combo", preco:119.90, desc:"2 Salgadas + 1 Doce + Refri 1.5L", img:"combo-mestre.png"}
-    ];
+    // --- SALGADAS (Padrão R$ 49,90) ---
+    {nome:"O Professor", cat:"salgada", preco:49.90, desc:"Mussarela, carne moída premium, bacon crocante e redemoinho de barbecue.", img:"professor.png"},
+    {nome:"Lisboa", cat:"salgada", preco:49.90, desc:"Mussarela, bacon em cubos e fatias de abacaxi (Agridoce).", img:"lisboa.png"},
+    {nome:"Berlim", cat:"salgada", preco:49.90, desc:"Mussarela, pepperoni fatiado e orégano chileno.", img:"berlim.png"},
+    {nome:"Tóquio", cat:"salgada", preco:49.90, desc:"Mussarela, atum sólido, cebola roxa, tomate e azeitonas pretas.", img:"toquio.png"},
+    {nome:"Rio", cat:"salgada", preco:49.90, desc:"Mussarela, calabresa especial fatiada e cebola.", img:"rio.png"},
+    {nome:"Nairóbi", cat:"salgada", preco:49.90, desc:"Mussarela, frango desfiado temperado e Catupiry original.", img:"nairobi.png"},
+    {nome:"Palermo", cat:"salgada", preco:49.90, desc:"Mussarela, fatias de tomate fresco, manjericão e orégano.", img:"palermo.png"},
+    {nome:"Marselha", cat:"salgada", preco:49.90, desc:"Mussarela, cogumelos Paris, presunto cozido e orégano.", img:"marselha.png"},
+    {nome:"Denver", cat:"salgada", preco:49.90, desc:"Mussarela, calabresa moída, pimenta calabresa e orégano.", img:"denver.png"},
+    {nome:"Oslo", cat:"salgada", preco:49.90, desc:"Mussarela, carne seca desfiada, cebola e Catupiry.", img:"oslo.png"},
+    {nome:"Moscou", cat:"salgada", preco:49.90, desc:"Mussarela, queijo prato, cheddar cremoso e Catupiry.", img:"moscou.png"},
 
-    const configCombos = {
-        "Combo Dalí": [{t:"salgada"}, {t:"doce"}],
-        "Combo Plano de Mestre": [{t:"salgada"}, {t:"salgada"}, {t:"doce"}]
-    };
+    // --- DOCES (Padrão R$ 39,90) ---
+    {nome:"Banana Nevada", cat:"doce", preco:39.90, desc:"Chocolate branco, banana fatiada e leite em pó.", img:"banana.png"},
+    {nome:"Confete", cat:"doce", preco:39.90, desc:"Chocolate ao leite cremoso coberto com confetes coloridos.", img:"confete.png"},
+    {nome:"Romeo e Julieta", cat:"doce", preco:39.90, desc:"Mussarela com goiabada cascão derretida.", img:"romeo.png"},
+
+    // --- COMBOS ---
+    {nome:"Combo O Professor", cat:"combo", preco:64.90, desc:"1 Pizza Salgada + Refri 1.5L", img:"combo-professor.png"},
+    {nome:"Combo Dalí", cat:"combo", preco:75.00, desc:"1 Pizza Salgada + 1 Pizza Doce + Refri 1.5L", img:"combo-dali.png"},
+    {nome:"Combo Plano de Mestre", cat:"combo", preco:119.90, desc:"2 Pizzas Salgadas + 1 Pizza Doce + Refri 1.5L", img:"combo-mestre.png"}
+];
+
+// Configuração de quais selects aparecem dentro de cada combo
+const configCombos = {
+    "Combo O Professor": [{t:"salgada"}],
+    "Combo Dalí": [{t:"salgada"}, {t:"doce"}],
+    "Combo Plano de Mestre": [{t:"salgada"}, {t:"salgada"}, {t:"doce"}]
+};
+
 
     let carrinho = [];
     let comboEmEdicao = null;
