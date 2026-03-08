@@ -1,225 +1,89 @@
-/* Variáveis para facilitar a manutenção */
-:root {
-    --primary: #cc0000;
-    --primary-dark: #8B0000;
-    --success: #25D366;
-    --bg: #f7f7f7;
-    --white: #ffffff;
-    --text-main: #2d2d2d;
-    --text-sub: #666666;
-    --shadow: 0 4px 15px rgba(0,0,0,0.08);
-}
-
-body {
-    margin: 0;
-    font-family: 'Inter', -apple-system, sans-serif;
-    background: var(--bg);
-    color: var(--text-main);
-    -webkit-tap-highlight-color: transparent; /* Remove brilho azul ao clicar no celular */
-}
-
-/* Splash Screen Corrigida */
-#splash {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: var(--primary-dark);
-    display: flex; justify-content: center; align-items: center;
-    z-index: 10000;
-    transition: opacity 0.5s ease, visibility 0.5s;
-}
-#splash.hidden {
-    opacity: 0;
-    visibility: hidden;
-}
-
-/* Header Estilo App */
-.header {
-    background: #000;
-    color: white;
-    display: flex;
-    align-items: center;
-    padding: 20px 15px;
-    gap: 15px;
-}
-.header img {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%; /* Foto redonda estilo Perfil */
-    border: 2px solid var(--primary);
-    object-fit: cover;
-}
-
-.banner {
-    background: linear-gradient(90deg, var(--primary-dark), #ff3c00);
-    color: white;
-    padding: 10px;
-    text-align: center;
-    font-weight: 600;
-    font-size: 13px;
-    letter-spacing: 0.5px;
-}
-
-/* Categorias que deslizam */
-.categories {
-    display: flex;
-    gap: 12px;
-    padding: 15px;
-    background: var(--white);
-    overflow-x: auto;
-    position: sticky;
-    top: 0;
-    z-index: 900;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-}
-.categories::-webkit-scrollbar { display: none; }
-
-.cat-btn {
-    padding: 10px 20px;
-    border-radius: 25px;
-    border: 1px solid #eee;
-    background: #f9f9f9;
-    cursor: pointer;
-    white-space: nowrap;
-    font-weight: 500;
-    color: var(--text-sub);
-    transition: 0.3s;
-}
-.cat-btn.active {
-    background: var(--primary);
-    color: white;
-    border-color: var(--primary);
-    box-shadow: 0 4px 10px rgba(204, 0, 0, 0.2);
-}
-
-/* Grid de Produtos - Estilo iFood (Vertical no Mobile) */
-.grid {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 15px;
-}
-
-.card {
-    background: var(--white);
-    border-radius: 12px;
-    display: flex; /* Alinha imagem ao lado do texto */
-    padding: 15px;
-    gap: 15px;
-    box-shadow: var(--shadow);
-    align-items: center;
-}
-
-.card img {
-    width: 100px;
-    height: 100px;
-    border-radius: 10px;
-    object-fit: cover;
-    flex-shrink: 0; /* Impede a imagem de amassar */
-    background: #eee; /* Fundo cinza caso a imagem falhe */
-}
-
-.card-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.card-content h3 {
-    margin: 0;
-    font-size: 16px;
-    color: var(--text-main);
-}
-
-.desc {
-    font-size: 13px;
-    color: var(--text-sub);
-    margin: 5px 0;
-    line-height: 1.4;
-}
-
-.price {
-    color: #2e7d32; /* Verde iFood para preço */
-    font-weight: 700;
-    font-size: 15px;
-    margin: 5px 0;
-}
-
-/* Meia a Meia */
-.meia-box {
-    background: var(--white);
-    margin: 15px;
-    padding: 18px;
-    border-radius: 12px;
-    border: 1px dashed var(--primary);
-}
-
-/* Carrinho Flutuante (Fixo embaixo) */
-.cart-btn {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: var(--white);
-    padding: 15px 20px;
-    box-sizing: border-box;
-    box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
-    display: flex;
-    justify-content: center;
-    z-index: 1000;
-}
-
-.cart-content-btn {
-    background: var(--success);
-    color: white;
-    width: 100%;
-    max-width: 500px;
-    padding: 14px;
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: bold;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-}
-
-/* Responsividade para Tablet/PC */
-@media(min-width: 768px) {
-    .grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-.checkout{
-max-width:420px;
-margin:auto;
-padding:20px;
-background:white;
-border-radius:12px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
+body{
+margin:0;
 font-family:Arial;
+background:#f7f7f7;
+padding-bottom:100px;
 }
 
-.checkout h2{
-text-align:center;
+.header{
+background:black;
+color:white;
+display:flex;
+align-items:center;
+gap:10px;
+padding:15px;
 }
 
-.resumo p{
-font-size:16px;
-margin:5px 0;
+.header img{
+width:60px;
+border-radius:50%;
 }
 
-.resumo h3{
-color:#d62828;
+.grid{
+padding:15px;
+display:flex;
+flex-direction:column;
+gap:10px;
 }
 
-.checkout input,
-.checkout select{
+.card{
+background:white;
+padding:15px;
+border-radius:10px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+cursor:pointer;
+}
+
+.price{
+color:#2e7d32;
+font-weight:bold;
+}
+
+.cart-bar{
+position:fixed;
+bottom:0;
+width:100%;
+background:white;
+padding:15px;
+display:none;
+}
+
+.cart-bar button{
+width:100%;
+background:#25D366;
+color:white;
+border:none;
+padding:15px;
+border-radius:8px;
+display:flex;
+justify-content:space-between;
+font-weight:bold;
+}
+
+.modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+display:none;
+justify-content:center;
+align-items:flex-end;
+}
+
+.modal-content{
+background:white;
+width:100%;
+max-width:500px;
+padding:20px;
+border-radius:20px 20px 0 0;
+}
+
+input,select{
 width:100%;
 padding:10px;
-margin-top:10px;
+margin-top:8px;
 border-radius:6px;
 border:1px solid #ccc;
 }
@@ -230,26 +94,29 @@ gap:5px;
 margin-top:10px;
 }
 
-.cupom input{
-flex:1;
-}
-
-.cupom button{
-background:#2a9d8f;
+.btn-finalizar{
+background:#25D366;
 color:white;
-border:none;
-padding:10px;
-border-radius:6px;
-}
-
-.finalizar{
 width:100%;
-margin-top:20px;
-padding:14px;
-background:#d62828;
-color:white;
+padding:15px;
 border:none;
-font-size:18px;
-border-radius:8px;
+border-radius:10px;
+margin-top:10px;
+font-weight:bold;
 }
 
+.whats{
+position:fixed;
+right:20px;
+bottom:120px;
+background:#25D366;
+width:60px;
+height:60px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:30px;
+color:white;
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
