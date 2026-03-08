@@ -86,18 +86,29 @@
 
 <div class="modal" id="modal-combo">
     <div class="modal-content">
-        <h2 id="combo-titulo" style="color:var(--primary); margin:0 0 10px 0; font-size:18px;">Configurar Combo</h2>
+        <h2 id="combo-titulo" style="color:var(--ifood-red); margin:0 0 10px 0; font-size:18px;">Configurar Combo</h2>
         <div id="combo-opcoes"></div>
+        
         <label style="font-size:13px; font-weight:bold;">🥤 Bebida do Combo:</label>
         <select id="combo-refri">
             <option>Coca-Cola 1.5L</option>
             <option>Guaraná Antarctica 1.5L</option>
             <option>Fanta Laranja 1.5L</option>
         </select>
-        <button class="add-btn" onclick="confirmarCombo()" style="background:var(--success); color:white; border:none; padding:12px; margin-top:10px;">Confirmar e Adicionar</button>
+
+        <label style="font-size:13px; font-weight:bold;">🍕 Borda Recheada (Opcional):</label>
+        <select id="combo-borda">
+            <option value="0">Sem borda recheada</option>
+            <option value="8">Borda Catupiry (+ R$ 8,00)</option>
+            <option value="8">Borda Cheddar (+ R$ 8,00)</option>
+            <option value="10">Borda Chocolate (+ R$ 10,00)</option>
+        </select>
+
+        <button class="add-btn" onclick="confirmarCombo()" style="background:var(--success); color:white; border:none; padding:12px; margin-top:10px; width:100%; border-radius:4px; font-weight:bold;">Confirmar e Adicionar</button>
         <button onclick="fecharModalCombo()" style="background:none; border:none; color:#999; width:100%; margin-top:15px; cursor:pointer;">Cancelar</button>
     </div>
 </div>
+
 
 <div class="modal" id="modal">
     <div class="modal-content">
