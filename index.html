@@ -311,5 +311,125 @@
         setTimeout(() => document.getElementById("splash").classList.add("hidden"), 1000);
     };
 </script>
+
+<div class="checkout">
+
+<h2>🛒 Finalizar Pedido</h2>
+
+<div class="resumo">
+<p>Subtotal: R$ <span id="subtotal">50.00</span></p>
+
+<p>Taxa de entrega: R$ <span id="entrega">5.00</span></p>
+
+<p>Desconto: R$ <span id="desconto">0.00</span></p>
+
+<h3>Total: R$ <span id="total">55.00</span></h3>
+</div>
+
+
+<input type="text" id="nome" placeholder="Seu nome">
+
+<input type="text" id="endereco" placeholder="Seu endereço">
+
+
+<select id="pagamento">
+<option>Forma de pagamento</option>
+<option>Pix</option>
+<option>Cartão</option>
+<option>Dinheiro</option>
+</select>
+
+
+<div class="cupom">
+
+<input type="text" id="cupom" placeholder="Cupom de desconto">
+
+<button onclick="aplicarCupom()">Aplicar</button>
+
+<p id="msgCupom"></p>
+
+</div>
+
+
+<button class="finalizar" onclick="enviarWhats()">Finalizar Pedido</button>
+
+</div>
+
+<script>
+
+let subtotal = 50
+let taxaEntrega = 5
+let desconto = 0
+
+function aplicarCupom(){
+
+let cupom = document.getElementById("cupom").value
+
+if(cupom == "PIZZA10"){
+
+desconto = subtotal * 0.10
+document.getElementById("msgCupom").innerText = "Cupom aplicado!"
+
+}
+
+else if(cupom == "PROMO5"){
+
+desconto = 5
+document.getElementById("msgCupom").innerText = "R$5 de desconto aplicado!"
+
+}
+
+else{
+
+desconto = 0
+document.getElementById("msgCupom").innerText = "Cupom inválido"
+
+}
+
+atualizarTotal()
+
+}
+
+
+
+function atualizarTotal(){
+
+let total = subtotal + taxaEntrega - desconto
+
+document.getElementById("desconto").innerText = desconto.toFixed(2)
+
+document.getElementById("total").innerText = total.toFixed(2)
+
+}
+
+
+
+function enviarWhats(){
+
+let nome = document.getElementById("nome").value
+let endereco = document.getElementById("endereco").value
+let pagamento = document.getElementById("pagamento").value
+let total = document.getElementById("total").innerText
+
+let mensagem = `🍕 *Novo Pedido - La Casa da Pizza*
+
+👤 Nome: ${nome}
+
+📍 Endereço: ${endereco}
+
+💳 Pagamento: ${pagamento}
+
+💰 Total: R$ ${total}`
+
+
+let telefone = "5561998791411"
+
+let url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`
+
+window.open(url, "_blank")
+
+}
+
+</script>
 </body>
 </html>
