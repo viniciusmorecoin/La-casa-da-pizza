@@ -245,16 +245,27 @@ function abrirCombo(nome){
     document.getElementById("modal-combo").style.display = "flex";
 }
 
-function confirmarCombo(){
+function confirmarCombo() {
     const escolhidos = Array.from(document.querySelectorAll(".combo-sel")).map(s => s.value);
     const refri = document.getElementById("combo-refri").value;
+    const bordaValor = parseFloat(document.getElementById("combo-borda").value);
+    const bordaTexto = document.getElementById("combo-borda").options[document.getElementById("combo-borda").selectedIndex].text;
+
+    // Soma o preço base do combo + o valor da borda escolhida
+    const precoFinal = comboEmEdicao.preco + bordaValor;
+
     carrinho.push({ 
         nome: comboEmEdicao.nome, 
-        preco: comboEmEdicao.preco, 
-        obs: `Sabores: ${escolhidos.join(" + ")} | Refri: ${refri}` 
+        preco: precoFinal, 
+        obs: `Sabores: ${escolhidos.join(" + ")} | Refri: ${refri} | ${bordaValor > 0 ? bordaTexto : 'Sem Borda'}` 
     });
-    fecharModalCombo(); atualizarContador();
+
+    fecharModalCombo(); 
+    atualizarUI(); // Se estiver usando o layout iFood
+    // atualizarContador(); // Se estiver usando o layout antigo
+    alert("Combo adicionado com sucesso!");
 }
+
 
 function abrirCarrinho(){
     document.getElementById("itens").innerHTML = carrinho.map((p, i) => `
