@@ -191,3 +191,65 @@ body {
         grid-template-columns: 1fr 1fr;
     }
 }
+
+.checkout{
+max-width:420px;
+margin:auto;
+padding:20px;
+background:white;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+font-family:Arial;
+}
+
+.checkout h2{
+text-align:center;
+}
+
+.resumo p{
+font-size:16px;
+margin:5px 0;
+}
+
+.resumo h3{
+color:#d62828;
+}
+
+.checkout input,
+.checkout select{
+width:100%;
+padding:10px;
+margin-top:10px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+.cupom{
+display:flex;
+gap:5px;
+margin-top:10px;
+}
+
+.cupom input{
+flex:1;
+}
+
+.cupom button{
+background:#2a9d8f;
+color:white;
+border:none;
+padding:10px;
+border-radius:6px;
+}
+
+.finalizar{
+width:100%;
+margin-top:20px;
+padding:14px;
+background:#d62828;
+color:white;
+border:none;
+font-size:18px;
+border-radius:8px;
+}
+
