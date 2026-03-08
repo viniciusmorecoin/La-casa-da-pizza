@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -14,45 +12,37 @@
 
 <body>
 
-<header class="header">
+<header>
 
-<img src="logo.png">
+<h1>🍕 La Casa da Pizza</h1>
 
-<div>
+<div class="categorias">
 
-<h1>La Casa da Pizza</h1>
+<button onclick="filtrar('salgada')">Pizzas Salgadas</button>
 
-<p>Delivery • Areal e Região</p>
+<button onclick="filtrar('doce')">Pizzas Doces</button>
+
+<button onclick="filtrar('combo')">Combos</button>
+
+<button onclick="filtrar('bebida')">Bebidas</button>
 
 </div>
 
 </header>
 
-
-<div class="banner">
-
-🔥 Promoção Hoje: Brotinho 15cm R$5 • 10 unidades R$4,50
-
-</div>
+<div id="lista" class="lista"></div>
 
 
-<div id="lista" class="grid"></div>
-
-
-<div class="cart-bar" id="cart-bar">
-
-<button onclick="abrirCarrinho()">
+<div id="cart-bar" onclick="abrirCarrinho()">
 
 <span id="contador">0 itens</span>
 
 <span id="total-btn">R$ 0,00</span>
 
-</button>
-
 </div>
 
 
-<div class="modal" id="modal-carrinho">
+<div id="modal-carrinho" class="modal">
 
 <div class="modal-content">
 
@@ -61,90 +51,86 @@
 <div id="itens"></div>
 
 
-<div class="resumo">
+<h3>Borda recheada</h3>
 
-<p>Subtotal: <span id="subtotal"></span></p>
+<select id="borda">
 
-<p>Entrega: <span id="entrega">R$5</span></p>
+<option value="0">Sem borda</option>
 
-<p>Desconto: <span id="desconto">R$0</span></p>
+<option value="10">Cheddar +10</option>
 
-<h3>Total: <span id="total"></span></h3>
+<option value="10">Catupiry +10</option>
 
-</div>
-
-
-<select id="bairro" onchange="calcularEntrega()">
-
-<option value="5">Areal - R$5</option>
-
-<option value="7">Águas Claras - R$7</option>
-
-<option value="8">Taguatinga - R$8</option>
+<option value="12">Chocolate +12</option>
 
 </select>
 
 
-<input type="text" id="nome" placeholder="Seu nome">
+<h3>Cupom</h3>
 
-<input type="text" id="endereco" placeholder="Endereço completo">
+<input id="cupom">
 
+<button onclick="aplicarCupom()">Aplicar</button>
+
+
+<h3>Entrega</h3>
+
+<select id="bairro" onchange="calcularEntrega()">
+
+<option value="5">Areal - 5</option>
+
+<option value="7">Taguatinga - 7</option>
+
+<option value="10">Águas Claras - 10</option>
+
+</select>
+
+
+<h3>Pagamento</h3>
 
 <select id="pagamento" onchange="verificarPix()">
+
+<option>Dinheiro</option>
 
 <option>Pix</option>
 
 <option>Cartão</option>
 
-<option>Dinheiro</option>
-
 </select>
-
 
 <div id="pix-box">
 
-<h3>Pagar com Pix</h3>
-
-<img src="pix.png" width="200">
-
-<p>Chave Pix: 61998791411</p>
+<p>Pix: 61998791411</p>
 
 </div>
 
 
-<div class="cupom">
+<input id="nome" placeholder="Seu nome">
 
-<input type="text" id="cupom" placeholder="Cupom">
+<input id="endereco" placeholder="Endereço">
 
-<button onclick="aplicarCupom()">Aplicar</button>
+<div class="total-box">
+
+Subtotal: <span id="subtotal"></span><br>
+
+Desconto: <span id="desconto"></span><br>
+
+Total: <span id="total"></span>
 
 </div>
 
 
-<button class="btn-finalizar" onclick="finalizarPedido()">
+<button class="finalizar" onclick="finalizarPedido()">
 
 Finalizar Pedido
 
 </button>
 
-
-<button onclick="fecharCarrinho()">Voltar</button>
-
-
 </div>
 
 </div>
-
-
-<a href="https://wa.me/5561998791411" class="whats">
-
-💬
-
-</a>
-
 
 <script src="script.js"></script>
 
 </body>
-
 </html>
