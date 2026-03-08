@@ -158,19 +158,33 @@ const LINK_MERCADO_PAGO = "https://link.mercadopago.com.br/pedidolacasadapizza";
 const WHATSAPP_NUM = "5561998791411";
 
 const sabores = [
-    {nome:"Pizza do Professor",cat:"salgada",preco:49.90,img:"IMG_0206.png",desc:"Mussarela, carne moída temperada, bacon e barbecue."},
-    {nome:"Pizza da Lisboa",cat:"salgada",preco:49.90,img:"IMG_0207.png",desc:"Mussarela, bacon crocante e abacaxi selecionado."},
-    {nome:"Pizza do Berlim",cat:"salgada",preco:49.90,img:"IMG_0208.png",desc:"Molho de tomate, mussarela e pepperoni fatiado."},
-    {nome:"Pizza da Tóquio",cat:"salgada",preco:49.90,img:"IMG_0208.png",desc:"Mussarela, atum, cebola, tomate e azeitona."},
-    {nome:"Pizza do Rio",cat:"salgada",preco:49.90,img:"IMG_0210.png",desc:"Mussarela, calabresa fatiada, cebola e orégano."},
-    {nome:"Pizza da Nairóbi",cat:"salgada",preco:49.90,img:"IMG_0211.png",desc:"Mussarela, frango desfiado e catupiry original."},
-    {nome:"Pizza do Palermo",cat:"salgada",preco:49.90,img:"IMG_0212.png",desc:"Mussarela, tomate, manjericão e orégano."},
-    {nome:"Pizza do Marselha",cat:"salgada",preco:49.90,img:"IMG_0213.png",desc:"Mussarela, cogumelos e presunto fatiado."},
-    {nome:"Pizza de Confete",cat:"doce",preco:39.90,img:"confete.jpg",desc:"Chocolate ao leite cremoso com confetes coloridos."},
-    {nome:"Pizza de Banana Nevada",cat:"doce",preco:39.90,img:"banana.jpg",desc:"Banana fatiada, chocolate branco e leite em pó."},
+    // --- SALGADAS (R$ 49,90) ---
+    {nome:"O Professor", cat:"salgada", preco:49.90, img:"professor.png", desc:"Molho de tomate, mussarela, carne moída, bacon e barbecue."},
+    {nome:"Lisboa", cat:"salgada", preco:49.90, img:"lisboa.png", desc:"Molho de tomate, mussarela, bacon e abacaxi."},
+    {nome:"Berlim", cat:"salgada", preco:49.90, img:"berlim.png", desc:"Molho de tomate, mussarela, pepperoni e orégano."},
+    {nome:"Tóquio", cat:"salgada", preco:49.90, img:"toquio.png", desc:"Molho de tomate, mussarela, atum, cebola, tomate, azeitona e orégano."},
+    {nome:"Rio", cat:"salgada", preco:49.90, img:"rio.png", desc:"Molho de tomate, mussarela, calabresa, cebola e orégano."},
+    {nome:"Nairóbi", cat:"salgada", preco:49.90, img:"nairobi.png", desc:"Molho de tomate, mussarela, frango, catupiry e orégano."},
+    {nome:"Palermo", cat:"salgada", preco:49.90, img:"palermo.png", desc:"Molho de tomate, mussarela, tomate, manjericão e orégano."},
+    {nome:"Marselha", cat:"salgada", preco:49.90, img:"marselha.png", desc:"Molho de tomate, mussarela, cogumelo, presunto e orégano."},
+    {nome:"Denver", cat:"salgada", preco:49.90, img:"denver.png", desc:"Molho de tomate, mussarela, calabresa, pimenta calabresa e orégano."},
+    {nome:"Oslo", cat:"salgada", preco:49.90, img:"oslo.png", desc:"Molho de tomate, mussarela, carne seca, cebola, catupiry e orégano."},
+    {nome:"Estocolmo", cat:"salgada", preco:49.90, img:"estocolmo.png", desc:"Molho de tomate, mussarela, presunto, tomate, azeitona e orégano."},
+    {nome:"Moscou", cat:"salgada", preco:49.90, img:"moscou.png", desc:"Molho de tomate, mussarela, queijo prato, cheddar, catupiry e orégano."},
+    {nome:"Bogotá", cat:"salgada", preco:49.90, img:"bogota.png", desc:"Molho de tomate, mussarela, carne moída, milho e orégano."},
+
+    // --- DOCES (R$ 39,90) ---
+    {nome:"Confete", cat:"doce", preco:39.90, img:"confete.png", desc:"Chocolate com confetes coloridos."},
+    {nome:"Banana Nevada", cat:"doce", preco:39.90, img:"banana.png", desc:"Banana com chocolate branco."},
+    {nome:"Romeo e Julieta", cat:"doce", preco:39.90, img:"romeo.png", desc:"Queijo com goiabada."},
+    {nome:"Chocolate", cat:"doce", preco:39.90, img:"chocolate.png", desc:"Chocolate ao leite cremoso."},
+    {nome:"Prestígio", cat:"doce", preco:39.90, img:"prestigio.png", desc:"Chocolate com coco ralado."},
+
+    // --- COMBOS ---
     {nome:"Combo O Professor", cat:"combo", preco:64.90, img:"combo-prof.jpg", desc:"1 Pizza Salgada + Refri 1.5L"},
     {nome:"Combo Dalí", cat:"combo", preco:75.00, img:"combo-dali.jpg", desc:"1 Pizza Salgada + 1 Pizza Doce + Refri 1.5L"}
 ];
+
 
 const configCombos = {
     "Combo O Professor": [{t:"salgada"}],
@@ -216,16 +230,26 @@ function addMeia(){
     alert("Pizza Meia a Meia adicionada!");
 }
 
-function abrirCombo(nome){
-    comboEmEdicao = sabores.find(s => s.nome === nome);
-    document.getElementById("combo-titulo").innerText = nome;
-    document.getElementById("combo-opcoes").innerHTML = configCombos[nome].map((p, i) => `
-        <div class="combo-item-box">
-            <strong>Item ${i+1} (${p.t}):</strong>
-            <select class="c-s1">${sabores.filter(s => s.cat === p.t).map(s => `<option value="${s.nome}">${s.nome}</option>`).join("")}</select>
-        </div>`).join("");
-    document.getElementById("modal-combo").style.display = "flex";
+function addMeia(){
+    const s1 = sabores[document.getElementById("sabor1").value];
+    const s2 = sabores[document.getElementById("sabor2").value];
+    const borda = parseFloat(document.getElementById("borda").value);
+    
+    if(!s1 || !s2) return alert("Escolha os sabores primeiro!");
+    
+    // Nome simplificado para o carrinho
+    const nomeMeia = `1/2 ${s1.nome} | 1/2 ${s2.nome}`;
+    
+    carrinho.push({ 
+        nome: nomeMeia, 
+        preco: Math.max(s1.preco, s2.preco) + borda,
+        obs: borda > 0 ? "Com borda recheada" : "Sem borda"
+    });
+    
+    atualizarContador();
+    alert("Meia a Meia adicionada!");
 }
+
 
 function confirmarCombo(){
     const s1 = document.querySelectorAll(".c-s1");
