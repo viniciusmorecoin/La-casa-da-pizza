@@ -1,14 +1,29 @@
 const produtos=[
-{nome:"Pizza Calabresa",preco:49.90},
-{nome:"Pizza Frango Catupiry",preco:49.90},
-{nome:"Pizza Marguerita",preco:49.90},
-{nome:"Pizza Banana Nevada",preco:39.90},
-{nome:"Coca-Cola 2L",preco:15}
+
+{nome:"Pizza Calabresa",preco:49.90,img:"calabresa.jpg",desc:"Calabresa e cebola"},
+{nome:"Pizza Frango Catupiry",preco:49.90,img:"frango.jpg",desc:"Frango e catupiry"},
+{nome:"Pizza Marguerita",preco:49.90,img:"marguerita.jpg",desc:"Tomate e manjericão"},
+{nome:"Pizza Banana Nevada",preco:39.90,img:"banana.jpg",desc:"Chocolate branco e leite em pó"},
+{nome:"Coca-Cola 2L",preco:15,img:"coca.jpg",desc:"Refrigerante"}
+
 ]
+
 
 let carrinho=[]
 let desconto=0
 let entrega=5
+
+
+const cupons={
+
+PIZZA10:{tipo:"porcentagem",valor:10},
+
+CASADAPIZZA:{tipo:"fixo",valor:8},
+
+INSTAGRAM:{tipo:"porcentagem",valor:5}
+
+}
+
 
 function render(){
 
@@ -18,9 +33,17 @@ lista.innerHTML=produtos.map(p=>`
 
 <div class="card" onclick="add('${p.nome}')">
 
+<img src="${p.img}" class="pizza-img">
+
+<div class="card-info">
+
 <h3>${p.nome}</h3>
 
+<p class="desc">${p.desc}</p>
+
 <span class="price">R$ ${p.preco}</span>
+
+</div>
 
 </div>
 
@@ -28,9 +51,10 @@ lista.innerHTML=produtos.map(p=>`
 
 }
 
+
 function add(nome){
 
-const p=produtos.find(x=>x.nome==nome)
+let p=produtos.find(x=>x.nome==nome)
 
 let item=carrinho.find(x=>x.nome==nome)
 
@@ -47,6 +71,7 @@ carrinho.push({...p,qtd:1})
 atualizar()
 
 }
+
 
 function atualizar(){
 
@@ -66,6 +91,7 @@ document.getElementById("cart-bar").style.display="block"
 
 }
 
+
 function abrirCarrinho(){
 
 let html=""
@@ -76,11 +102,9 @@ html+=`
 
 <div>
 
-${i.nome}
+${i.nome} x${i.qtd}
 
 <button onclick="menos(${index})">-</button>
-
-${i.qtd}
 
 <button onclick="mais(${index})">+</button>
 
@@ -98,6 +122,7 @@ document.getElementById("modal-carrinho").style.display="flex"
 
 }
 
+
 function mais(i){
 
 carrinho[i].qtd++
@@ -105,6 +130,7 @@ carrinho[i].qtd++
 abrirCarrinho()
 
 }
+
 
 function menos(i){
 
@@ -122,23 +148,30 @@ abrirCarrinho()
 
 }
 
+
 function aplicarCupom(){
 
-let c=document.getElementById("cupom").value
+let c=document.getElementById("cupom").value.toUpperCase()
 
 let subtotal=carrinho.reduce((a,b)=>a+b.preco*b.qtd,0)
 
-if(c=="PIZZA10"){
+if(cupons[c]){
 
-desconto=subtotal*0.1
+if(cupons[c].tipo=="porcentagem"){
 
-}else if(c=="PROMO5"){
+desconto=subtotal*(cupons[c].valor/100)
 
-desconto=5
+}
+
+if(cupons[c].tipo=="fixo"){
+
+desconto=cupons[c].valor
+
+}
+
+alert("Cupom aplicado")
 
 }else{
-
-desconto=0
 
 alert("Cupom inválido")
 
@@ -147,6 +180,33 @@ alert("Cupom inválido")
 atualizarTotal()
 
 }
+
+
+function calcularEntrega(){
+
+entrega=parseFloat(document.getElementById("bairro").value)
+
+atualizarTotal()
+
+}
+
+
+function verificarPix(){
+
+let p=document.getElementById("pagamento").value
+
+if(p=="Pix"){
+
+document.getElementById("pix-box").style.display="block"
+
+}else{
+
+document.getElementById("pix-box").style.display="none"
+
+}
+
+}
+
 
 function atualizarTotal(){
 
@@ -161,6 +221,7 @@ document.getElementById("desconto").innerText=`R$ ${desconto.toFixed(2)}`
 document.getElementById("total").innerText=`R$ ${total.toFixed(2)}`
 
 }
+
 
 function finalizarPedido(){
 
@@ -183,5 +244,6 @@ msg+=`\nTotal: ${total}`
 window.open(`https://wa.me/5561998791411?text=${encodeURIComponent(msg)}`)
 
 }
+
 
 render()
