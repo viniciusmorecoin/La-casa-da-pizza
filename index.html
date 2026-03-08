@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>La Casa da Pizza</title>
 
 <link rel="stylesheet" href="style.css">
@@ -12,23 +15,44 @@
 <body>
 
 <header class="header">
+
 <img src="logo.png">
+
 <div>
+
 <h1>La Casa da Pizza</h1>
+
 <p>Delivery • Areal e Região</p>
+
 </div>
+
 </header>
+
+
+<div class="banner">
+
+🔥 Promoção Hoje: Brotinho 15cm R$5 • 10 unidades R$4,50
+
+</div>
+
 
 <div id="lista" class="grid"></div>
 
-<div id="cart-bar" class="cart-bar">
+
+<div class="cart-bar" id="cart-bar">
+
 <button onclick="abrirCarrinho()">
+
 <span id="contador">0 itens</span>
+
 <span id="total-btn">R$ 0,00</span>
+
 </button>
+
 </div>
 
-<div id="modal-carrinho" class="modal">
+
+<div class="modal" id="modal-carrinho">
 
 <div class="modal-content">
 
@@ -36,47 +60,91 @@
 
 <div id="itens"></div>
 
+
 <div class="resumo">
 
 <p>Subtotal: <span id="subtotal"></span></p>
 
-<p>Entrega: <span id="entrega">R$ 5,00</span></p>
+<p>Entrega: <span id="entrega">R$5</span></p>
 
-<p>Desconto: <span id="desconto">R$ 0,00</span></p>
+<p>Desconto: <span id="desconto">R$0</span></p>
 
 <h3>Total: <span id="total"></span></h3>
 
 </div>
 
-<input type="text" id="nome" placeholder="Seu nome">
-<input type="text" id="endereco" placeholder="Endereço">
 
-<select id="pagamento">
-<option>Pix</option>
-<option>Cartão</option>
-<option>Dinheiro</option>
+<select id="bairro" onchange="calcularEntrega()">
+
+<option value="5">Areal - R$5</option>
+
+<option value="7">Águas Claras - R$7</option>
+
+<option value="8">Taguatinga - R$8</option>
+
 </select>
 
-<div class="cupom">
-<input type="text" id="cupom" placeholder="Cupom">
-<button onclick="aplicarCupom()">Aplicar</button>
+
+<input type="text" id="nome" placeholder="Seu nome">
+
+<input type="text" id="endereco" placeholder="Endereço completo">
+
+
+<select id="pagamento" onchange="verificarPix()">
+
+<option>Pix</option>
+
+<option>Cartão</option>
+
+<option>Dinheiro</option>
+
+</select>
+
+
+<div id="pix-box">
+
+<h3>Pagar com Pix</h3>
+
+<img src="pix.png" width="200">
+
+<p>Chave Pix: 61998791411</p>
+
 </div>
 
+
+<div class="cupom">
+
+<input type="text" id="cupom" placeholder="Cupom">
+
+<button onclick="aplicarCupom()">Aplicar</button>
+
+</div>
+
+
 <button class="btn-finalizar" onclick="finalizarPedido()">
-Finalizar no WhatsApp
+
+Finalizar Pedido
+
 </button>
+
 
 <button onclick="fecharCarrinho()">Voltar</button>
 
+
 </div>
 
 </div>
+
 
 <a href="https://wa.me/5561998791411" class="whats">
+
 💬
+
 </a>
+
 
 <script src="script.js"></script>
 
 </body>
+
 </html>
