@@ -147,13 +147,16 @@ const sabores = [
     {nome:"Romeo e Julieta", cat:"doce", preco:39.90, desc:"Queijo mussarela com goiabada cascão."},
     {nome:"Prestígio", cat:"doce", preco:39.90, desc:"Chocolate ao leite com coco ralado."},
     {nome:"Combo O Professor", cat:"combo", preco:64.90, desc:"1 Pizza Salgada + Refri 1.5L"},
-    {nome:"Combo Dalí", cat:"combo", preco:75.00, desc:"1 Pizza Salgada + 1 Pizza Doce + Refri 1.5L"}
+    {nome:"Combo Dalí", cat:"combo", preco:75.00, desc:"1 Pizza Salgada + 1 Pizza Doce + Refri 1.5L"},
+    {nome: "Combo Plano de Mestre", cat: "combo", preco: 119.90, img: "combo-mestre.png", desc: "2 Pizzas Salgadas + 1 Pizza Doce + Refri 1.5L"},
 ];
 
 const configCombos = {
     "Combo O Professor": [{t:"salgada"}],
-    "Combo Dalí": [{t:"salgada"}, {t:"doce"}]
+    "Combo Dalí": [{t:"salgada"}, {t:"doce"}],
+    "Combo Plano de Mestre": [{t:"salgada"}, {t:"salgada"}, {t:"doce"}] // Adicionado aqui
 };
+
 
 let carrinho = [];
 let comboEmEdicao = null;
