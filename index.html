@@ -134,6 +134,13 @@
     <button onclick="addMeia()" style="width:100%; background:var(--primary); color:white; border:none; padding:10px; border-radius:5px; font-weight:bold;">Adicionar</button>
 </div>
 
+<div class="section-title" style="padding: 20px 15px 5px; font-weight: bold; font-size: 18px;">🔥 Mais Pedidos</div>
+<div class="mais-pedidos" id="mais-pedidos" style="display: flex; overflow-x: auto; gap: 15px; padding: 15px;">
+    </div>
+
+<div class="section-title" style="padding: 10px 15px; font-weight: bold; font-size: 18px;">🍕 Cardápio Completo</div>
+
+
 <div id="lista" class="grid"></div>
 
 <div class="cart-btn" id="cart-bar">
@@ -291,12 +298,32 @@ const configCombos = {
     function fecharModalCombo() { document.getElementById("modal-combo").style.display = "none"; }
 
     window.onload = () => {
-        render("todas");
-        const opts = sabores.filter(s => s.cat !== 'combo').map(s => `<option value="${s.nome}">${s.nome}</option>`).join("");
-        document.getElementById("sabor1").innerHTML = opts;
-        document.getElementById("sabor2").innerHTML = opts;
-        setTimeout(() => document.getElementById("splash").classList.add("hidden"), 1500);
-    };
+    render("todas");
+    
+    // Seleciona os 3 sabores que mais vendem para o topo
+    const destaques = ["O Professor", "Berlim", "Combo Plano de Mestre"];
+    const containerDestaques = document.getElementById("mais-pedidos");
+    
+    containerDestaques.innerHTML = sabores
+        .filter(s => destaques.includes(s.nome))
+        .map(s => `
+            <div class="card-destaque" onclick="${s.cat === 'combo' ? `abrirCombo('${s.nome}')` : `add('${s.nome}')`}" 
+                 style="min-width: 160px; background: white; border-radius: 12px; box-shadow: var(--shadow); padding: 10px; flex-shrink: 0;">
+                <img src="${s.img}" onerror="this.src='https://via.placeholder.com/100'" 
+                     style="width: 100%; height: 100px; border-radius: 8px; object-fit: cover;">
+                <h4 style="margin: 8px 0 4px; font-size: 14px;">${s.nome}</h4>
+                <span class="price" style="font-size: 13px;">R$ ${s.preco.toFixed(2)}</span>
+            </div>
+        `).join("");
+
+    // Preenche os selects do meia a meia
+    const opts = sabores.filter(s => s.cat !== 'combo').map(s => `<option value="${s.nome}">${s.nome}</option>`).join("");
+    document.getElementById("sabor1").innerHTML = opts;
+    document.getElementById("sabor2").innerHTML = opts;
+    
+    setTimeout(() => document.getElementById("splash").classList.add("hidden"), 1500);
+};
+
 </script>
 </body>
 </html>
